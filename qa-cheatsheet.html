@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Q&amp;A Cheat Sheet — Carrie A. Yu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,900&family=Nunito+Sans:wght@400;600;700;800;900&family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#FBF5E9; --ink:#14232b; --ink-soft:#4a5c65;
+    --gold:#E9A23B; --gold-deep:#B5781F; --teal:#2FA39A; --coral:#E86A50;
+    --line:#E7DAC0;
+    --display:'Fraunces',Georgia,serif; --body:'Nunito Sans',system-ui,sans-serif; --jp:'Zen Maru Gothic','Hiragino Sans',sans-serif;
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  body{ font-family:var(--body); color:var(--ink); line-height:1.5;
+    background:
+      radial-gradient(90% 40% at 100% 0%, rgba(246,200,98,.18), transparent 55%),
+      linear-gradient(180deg,#FDF8EE,#F5EAD4); min-height:100vh; padding:2.4rem 1.2rem 4rem; }
+  .wrap{ max-width:860px; margin:0 auto; }
+
+  header.head{ margin-bottom:2rem; border-bottom:3px solid var(--gold); padding-bottom:1.4rem; }
+  .eyebrow{ font-weight:900; text-transform:uppercase; letter-spacing:.24em; font-size:.72rem; color:var(--gold-deep); }
+  h1{ font-family:var(--display); font-weight:900; font-size:clamp(1.9rem,5vw,3rem); line-height:1.05; margin:.3rem 0; letter-spacing:-.01em; }
+  .head .jp{ font-family:var(--jp); color:var(--ink-soft); font-size:1rem; }
+  .head p.note{ color:var(--ink-soft); margin-top:.7rem; max-width:60ch; }
+
+  .tips{ background:#fff; border-radius:16px; padding:1.3rem 1.5rem; margin-bottom:2rem;
+    box-shadow:0 10px 30px rgba(20,35,43,.06); border-left:5px solid var(--teal); }
+  .tips h2{ font-family:var(--display); font-weight:900; font-size:1.2rem; margin-bottom:.7rem; }
+  .tips ul{ list-style:none; display:grid; gap:.55rem; }
+  .tips li{ display:flex; gap:.6rem; align-items:flex-start; font-size:.95rem; }
+  .tips li b{ color:var(--teal); }
+  .tips li .n{ flex:none; width:1.5rem; }
+  .tips .jp{ font-family:var(--jp); color:var(--ink-soft); font-size:.85em; }
+
+  .cat{ font-family:var(--display); font-weight:900; font-size:1.35rem; margin:2.2rem 0 1rem;
+    display:flex; align-items:center; gap:.6rem; color:var(--gold-deep); }
+  .cat::after{ content:""; flex:1; height:2px; background:var(--line); }
+
+  .qa{ background:#fff; border-radius:16px; padding:1.3rem 1.5rem; margin-bottom:1rem;
+    box-shadow:0 8px 22px rgba(20,35,43,.05); break-inside:avoid; }
+  .qa .q{ font-weight:900; font-size:1.08rem; color:var(--ink); display:flex; gap:.6rem; }
+  .qa .q .num{ font-family:var(--display); font-weight:900; color:var(--coral); flex:none; }
+  .qa .qjp{ font-family:var(--jp); color:var(--teal); font-weight:700; font-size:.92rem; margin:.25rem 0 .8rem 1.9rem; }
+  .qa .a{ margin-left:1.9rem; }
+  .qa .a .label{ font-weight:900; text-transform:uppercase; letter-spacing:.12em; font-size:.66rem; color:var(--gold-deep); margin-bottom:.4rem; }
+  .qa ul{ list-style:none; display:grid; gap:.4rem; }
+  .qa li{ display:flex; gap:.55rem; align-items:flex-start; font-size:.96rem; color:var(--ink-soft); }
+  .qa li::before{ content:""; margin-top:.55em; width:7px; height:7px; border-radius:50%; background:var(--gold); flex:none; }
+  .qa .say{ font-style:italic; color:var(--ink); }
+
+  .glossary{ background:#14232b; color:var(--cream); border-radius:16px; padding:1.5rem; margin-top:2rem; }
+  .glossary h2{ font-family:var(--display); font-weight:900; font-size:1.2rem; color:var(--gold); margin-bottom:.6rem; }
+  .glossary p{ opacity:.9; font-size:.95rem; }
+  .glossary .jp{ font-family:var(--jp); color:#F6C862; margin-top:.5rem; font-size:.9rem; }
+
+  footer{ text-align:center; color:var(--ink-soft); font-size:.82rem; margin-top:2.4rem; }
+
+  @media print{
+    body{ background:#fff; padding:0; }
+    .qa,.tips,.glossary{ box-shadow:none; border:1px solid var(--line); }
+    .glossary{ background:#fff; color:var(--ink); } .glossary h2{ color:var(--gold-deep); } .glossary .jp{ color:var(--teal); }
+    .cat{ break-after:avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="head">
+    <div class="eyebrow">Preparation · 準備</div>
+    <h1>Q&amp;A Cheat Sheet</h1>
+    <div class="jp">想定される質問と、答えのヒント</div>
+    <p class="note">Likely questions from the PHD team, with simple answers built from your real story. Each question is also written in Japanese so you know what they mean, even if the English is unclear. These are <b>drafts</b> — say them in your own words.</p>
+  </header>
+
+  <section class="tips">
+    <h2>🗣️ Before you answer — 5 quick tips</h2>
+    <ul>
+      <li><span class="n">1.</span><span><b>Speak slowly and simply.</b> Short sentences. Their English is rusty. <span class="jp">ゆっくり、短く話す。</span></span></li>
+      <li><span class="n">2.</span><span><b>Point at a slide.</b> Show, don't only tell. <span class="jp">スライドを指さして見せる。</span></span></li>
+      <li><span class="n">3.</span><span><b>Give one real example</b> for each answer — a story is easy to follow. <span class="jp">具体例を1つ話す。</span></span></li>
+      <li><span class="n">4.</span><span><b>If unsure what they asked,</b> say: <i>"May I repeat the question to check?"</i> <span class="jp">質問を確認してOK。</span></span></li>
+      <li><span class="n">5.</span><span><b>It's okay to pause and think.</b> Silence is fine. <span class="jp">少し考えてから答えて大丈夫。</span></span></li>
+    </ul>
+  </section>
+
+  <!-- YOUR JOURNEY -->
+  <div class="cat">🌄 About your journey</div>
+
+  <div class="qa">
+    <div class="q"><span class="num">1</span><span>Why did you choose IT / software development?</span></div>
+    <div class="qjp">なぜ IT・ソフトウェア開発の道を選びましたか？</div>
+    <div class="a">
+      <div class="label">Say something like</div>
+      <ul>
+        <li class="say">"In the Philippines, education decides your future. I chose IT because it is a skill I can grow forever, and it can lift my family."</li>
+        <li>Mention you liked building things that people actually use.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="q"><span class="num">2</span><span>Was it hard to study and work at the same time?</span></div>
+    <div class="qjp">学業と仕事の両立は大変でしたか？</div>
+    <div class="a">
+      <div class="label">Say something like</div>
+      <ul>
+        <li class="say">"Yes, it was tiring. But I chose it. I wanted experience before graduation, so companies would say yes to me."</li>
+        <li>This is your proof of <b>initiative</b> and <b>diskarte</b> — say it with pride.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="q"><span class="num">3</span><span>What was the hardest moment, and how did you get through it?</span></div>
+    <div class="qjp">一番大変だった時期と、その乗り越え方は？</div>
+    <div class="a">
+      <div class="label">Say something like</div>
+      <ul>
+        <li>Pick <b>one</b> real story (a hard project, a tight deadline, learning a new language like Java or Laravel fast).</li>
+        <li class="say">"It was hard, so I broke the problem into small steps, studied at night, and asked for help. I finished it."</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- DISKARTE -->
+  <div class="cat">💡 Diskarte &amp; problem-solving</div>
+
+  <div class="qa">
+    <div class="q"><span class="num">4</span><span>Can you give an example of "diskarte" — finding a creative way?</span></div>
+    <div class="qjp">「ディスカルテ」＝工夫した具体例を教えてください。</div>
+    <div class="a">
+      <div class="label">Say something like</div>
+      <ul>
+        <li>Working <b>while still a student</b> to fill the experience gap is your best example.</li>
+        <li>Or: a time you found a simpler, faster solution on a project when the normal way was blocked.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="q"><span class="num">5</span><span>How do you handle a difficult project or a tight deadline?</span></div>
+    <div class="qjp">難しい案件や、厳しい納期にどう対応しますか？</div>
+    <div class="a">
+      <div class="label">Say something like</div>
+      <ul>
+        <li class="say">"First I plan and split the work. I talk early with the client and the team. I focus on the most important parts first."</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- LEADERSHIP -->
+  <div class="cat">🧑‍🤝‍🧑 Leadership</div>
+
+  <div class="qa">
+    <div class="q"><span class="num">6</span><span>How did you become a team leader? What changed for you?</span></div>
+    <div class="qjp">どうやってリーダーになりましたか？何が変わりましたか？</div>
+    <div class="a">
+      <div class="label">Say something like</div>
+      <ul>
+        <li class="say">"I grew step by step. Before, I only wrote code. Now I also plan, guide the team, and talk with clients."</li>
+        <li>Show slide 10 (Developer → Leader).</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="q"><span class="num">7</span><span>What is your leadership style? How do you guide your team?</span></div>
+    <div class="qjp">あなたのリーダーシップのスタイルは？</div>
+    <div class="a">
+      <div class="label">Say something like</div>
+      <ul>
+        <li class="say">"I listen first. I explain the goal clearly, share tasks by strength, and support them when they are stuck."</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- WORKING WITH JAPAN -->
+  <div class="cat">🇯🇵 Working with Japan</div>
+
+  <div class="qa">
+    <div class="q"><span class="num">8</span><span>How do you communicate with Japanese clients?</span></div>
+    <div class="qjp">日本のお客様と、どのように意思疎通していますか？</div>
+    <div class="a">
+      <div class="label">Say something like</div>
+      <ul>
+        <li class="say">"I keep it simple and confirm everything. I use documents, screenshots, and diagrams so we understand each other clearly."</li>
+        <li>Optional: mention any Japanese words/phrases you are learning. <span class="jp">日本語を勉強中、と伝えても好印象。</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="q"><span class="num">9</span><span>What do you like about working with a Japanese company?</span></div>
+    <div class="qjp">日本の会社で働く良さは何ですか？</div>
+    <div class="a">
+      <div class="label">Say something like</div>
+      <ul>
+        <li class="say">"I respect the quality, the care for detail, and clear teamwork. I want to grow with that culture."</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- FUTURE -->
+  <div class="cat">🚀 Future &amp; you</div>
+
+  <div class="qa">
+    <div class="q"><span class="num">10</span><span>What are you most proud of?</span></div>
+    <div class="qjp">一番誇りに思うことは何ですか？</div>
+    <div class="a">
+      <div class="label">Say something like</div>
+      <ul>
+        <li class="say">"That I started from zero and became a team leader. And that my clients trust the systems my team builds."</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="q"><span class="num">11</span><span>Where do you want to be in 3–5 years? What is your next goal?</span></div>
+    <div class="qjp">3〜5年後の目標は？次に挑戦したいことは？</div>
+    <div class="a">
+      <div class="label">Say something like</div>
+      <ul>
+        <li class="say">"I want to lead bigger projects, grow more engineers, and go deeper into AI." <span class="jp">（AI に興味あり）</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="q"><span class="num">12</span><span>What are your strengths and weaknesses?</span></div>
+    <div class="qjp">あなたの強みと弱みは？</div>
+    <div class="a">
+      <div class="label">Say something like</div>
+      <ul>
+        <li><b>Strength:</b> <span class="say">"I learn fast and I never give up — diskarte."</span></li>
+        <li><b>Weakness:</b> pick a real one + how you are improving it (e.g. <span class="say">"I want to say no more often, so I am learning to protect the team's time."</span>)</li>
+      </ul>
+    </div>
+  </div>
+
+  <section class="glossary">
+    <h2>If they ask: "What is <em>diskarte</em>?"</h2>
+    <p>Diskarte is a Filipino word. It means <b>resourcefulness</b> — finding your own way to solve a problem, even with few resources. Not waiting. Taking action.</p>
+    <p class="jp">「ディスカルテ」＝ 少ない resources でも、自分で工夫して道を切りひらく力。待たずに動くこと。</p>
+  </section>
+
+  <footer>Carrie A. Yu · Software Developer &amp; Team Leader · Hipe Japan · Cebu, Philippines<br>Tip: open this on your phone during preparation, or press <b>Ctrl/Cmd + P</b> to print.</footer>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>From Zero to Leader — Carrie A. Yu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,900;1,9..144,500&family=Nunito+Sans:wght@400;600;700;800;900&family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  /* ============ Tokens ============ */
+  :root{
+    --cream:#FBF5E9;
+    --cream-2:#F4E9D3;
+    --ink:#14232b;
+    --ink-soft:#42545d;
+    --gold:#E9A23B;
+    --gold-deep:#B5781F;
+    --gold-2:#F6C862;
+    --sun:#FFDC93;
+    --teal:#2FA39A;
+    --teal-2:#4FC3B8;
+    --coral:#E86A50;
+    --coral-2:#F49079;
+
+    --display:'Fraunces', Georgia, serif;
+    --body:'Nunito Sans', -apple-system, system-ui, sans-serif;
+    --jp:'Zen Maru Gothic', 'Hiragino Sans', sans-serif;
+
+    --slide-pad: clamp(1.4rem, 4.5vw, 5rem);
+    --maxw: 1180px;
+    --ease: cubic-bezier(.22,.61,.36,1);
+  }
+
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html,body{ height:100%; }
+  body{
+    font-family:var(--body);
+    background:#0b1620;
+    color:var(--cream);
+    overflow:hidden;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+
+  /* ============ Slide system ============ */
+  .deck{ position:fixed; inset:0; }
+  .slide{
+    position:absolute; inset:0;
+    display:flex; flex-direction:column; justify-content:center;
+    padding:var(--slide-pad);
+    padding-bottom: clamp(4.5rem, 9vh, 7rem);
+    opacity:0; visibility:hidden;
+    transform:translateY(14px) scale(.995);
+    transition:opacity .6s var(--ease), transform .6s var(--ease), visibility .6s;
+    overflow:hidden;
+  }
+  .slide.is-active{ opacity:1; visibility:visible; transform:none; z-index:2; }
+  .slide__inner{ width:100%; max-width:var(--maxw); margin:0 auto; }
+
+  /* Chapter backgrounds — dawn -> sunrise -> daylight */
+  .slide[data-chap="dawn"]{
+    color:var(--cream);
+    background:
+      radial-gradient(120% 80% at 50% 118%, rgba(233,162,59,.30) 0%, rgba(233,162,59,0) 46%),
+      linear-gradient(180deg, #0a1620 0%, #102834 55%, #1b4551 100%);
+  }
+  .slide[data-chap="rise"]{
+    color:var(--cream);
+    background:
+      radial-gradient(90% 60% at 50% 112%, rgba(255,220,147,.55) 0%, rgba(246,200,98,0) 50%),
+      linear-gradient(180deg, #10262f 0%, #2f3b3c 40%, #8a5623 74%, #E9A23B 100%);
+  }
+  .slide[data-chap="day"]{
+    color:var(--ink);
+    background:
+      radial-gradient(110% 75% at 88% -8%, rgba(246,200,98,.42) 0%, rgba(246,200,98,0) 45%),
+      radial-gradient(90% 70% at 6% 108%, rgba(47,163,154,.18) 0%, rgba(47,163,154,0) 48%),
+      linear-gradient(165deg, #FDF8EE 0%, #F6ECD6 60%, #F0E3C9 100%);
+  }
+
+  /* ============ Type helpers ============ */
+  .eyebrow{
+    font-family:var(--body); font-weight:800;
+    text-transform:uppercase; letter-spacing:.28em;
+    font-size:clamp(.62rem,1.15vw,.8rem);
+    color:var(--gold-2);
+    display:inline-flex; align-items:center; gap:.6em;
+    margin-bottom:1.1rem;
+  }
+  .eyebrow::before{ content:""; width:26px; height:2px; background:var(--gold); border-radius:2px; }
+  [data-chap="day"] .eyebrow{ color:var(--gold-deep); }
+
+  h1,h2,h3{ font-family:var(--display); font-weight:900; line-height:1.02; letter-spacing:-.015em; }
+  .h-xl{ font-size:clamp(2.5rem, 8vw, 6.6rem); }
+  .h-lg{ font-size:clamp(2rem, 5.8vw, 4.4rem); }
+  .h-md{ font-size:clamp(1.55rem, 4vw, 3rem); }
+
+  .jp{ font-family:var(--jp); font-weight:500; opacity:.92; line-height:1.5; }
+  .jp-sub{ font-family:var(--jp); font-weight:500; color:var(--gold-2); opacity:.95;
+    font-size:clamp(.95rem,2vw,1.35rem); margin-top:.5rem; }
+  [data-chap="day"] .jp-sub{ color:var(--teal); opacity:1; }
+
+  .lead{ font-size:clamp(1.05rem,2.1vw,1.5rem); line-height:1.55; max-width:44ch; color:inherit; }
+  [data-chap="dawn"] .lead, [data-chap="rise"] .lead{ color:rgba(255,255,255,.86); }
+  [data-chap="day"] .lead{ color:var(--ink-soft); }
+  .muted{ opacity:.72; }
+  .accent{ color:var(--gold-2); } [data-chap="day"] .accent{ color:var(--gold-deep); }
+  .accent-teal{ color:var(--teal-2); } [data-chap="day"] .accent-teal{ color:var(--teal); }
+  .accent-coral{ color:var(--coral-2); } [data-chap="day"] .accent-coral{ color:var(--coral); }
+
+  /* ============ Chrome: chapter tag + counter + progress trail ============ */
+  .topbar{
+    position:fixed; top:0; left:0; right:0; z-index:20;
+    display:flex; justify-content:space-between; align-items:center;
+    padding: clamp(1rem,2.4vh,1.7rem) var(--slide-pad);
+    pointer-events:none; mix-blend-mode:normal;
+    font-family:var(--body); font-weight:800;
+    text-transform:uppercase; letter-spacing:.2em; font-size:.7rem;
+    transition:color .5s ease;
+  }
+  .topbar .chap span{ opacity:.55; }
+  .topbar .brand{ letter-spacing:.16em; }
+  body.theme-dark .topbar{ color:rgba(255,255,255,.7); }
+  body.theme-light .topbar{ color:rgba(20,35,43,.6); }
+
+  .nav{
+    position:fixed; left:0; right:0; bottom:0; z-index:20;
+    display:flex; align-items:center; gap:1rem;
+    padding: 0 var(--slide-pad) clamp(1.1rem,2.6vh,1.7rem);
+  }
+  .trail{ position:relative; flex:1; height:24px; display:flex; align-items:center; }
+  .trail__line{ position:absolute; left:0; right:0; height:2px; border-radius:2px; background:currentColor; opacity:.22; }
+  .trail__fill{ position:absolute; left:0; height:2px; border-radius:2px;
+    background:linear-gradient(90deg,var(--gold),var(--gold-2)); width:0; transition:width .55s var(--ease);
+    box-shadow:0 0 12px rgba(246,200,98,.6); }
+  .trail__dots{ position:relative; display:flex; justify-content:space-between; width:100%; }
+  .dot{ width:9px; height:9px; border-radius:50%; background:currentColor; opacity:.28;
+    cursor:pointer; transition:transform .3s var(--ease), opacity .3s, background .3s; pointer-events:auto; }
+  .dot:hover{ opacity:.6; transform:scale(1.3); }
+  .dot.done{ opacity:.5; background:var(--gold); }
+  .dot.active{ opacity:1; background:var(--gold-2); transform:scale(1.7);
+    box-shadow:0 0 0 4px rgba(246,200,98,.22), 0 0 14px rgba(246,200,98,.7); }
+  body.theme-dark .nav{ color:#fff; }
+  body.theme-light .nav{ color:var(--ink); }
+
+  .arrows{ display:flex; gap:.5rem; pointer-events:auto; }
+  .arrows button{
+    width:44px; height:44px; border-radius:50%;
+    border:1.5px solid currentColor; background:transparent; color:inherit;
+    font-size:1.1rem; cursor:pointer; opacity:.5;
+    display:grid; place-items:center; transition:opacity .25s, background .25s, transform .2s;
+    font-family:var(--body);
+  }
+  .arrows button:hover{ opacity:1; }
+  .arrows button:active{ transform:scale(.92); }
+  .arrows button:disabled{ opacity:.14; cursor:default; }
+  .counter{ font-variant-numeric:tabular-nums; font-weight:800; font-size:.8rem;
+    letter-spacing:.12em; min-width:56px; text-align:right; opacity:.75; }
+
+  :focus-visible{ outline:3px solid var(--gold-2); outline-offset:3px; border-radius:4px; }
+
+  /* ============ Reveal animation ============ */
+  .r{ opacity:0; transform:translateY(20px); }
+  .slide.is-active .r{ animation:rise .7s var(--ease) forwards; }
+  .slide.is-active .r{ animation-delay: calc(var(--i,0) * 110ms); }
+  @keyframes rise{ to{ opacity:1; transform:none; } }
+
+  /* ============ Cover (slide 1) ============ */
+  .cover{ text-align:left; }
+  .cover .sun{
+    position:absolute; left:50%; bottom:-24vh; transform:translateX(-50%);
+    width:78vh; height:78vh; border-radius:50%;
+    background:radial-gradient(circle at 50% 45%, #FFE7B0 0%, #F6C862 34%, rgba(233,162,59,.35) 60%, rgba(233,162,59,0) 72%);
+    filter:blur(2px);
+  }
+  .slide.is-active .cover .sun{ animation:sunrise 2.4s var(--ease) forwards; }
+  @keyframes sunrise{ from{ transform:translate(-50%,16vh); opacity:0; } to{ transform:translateX(-50%); opacity:1; } }
+  .cover__wrap{ position:relative; z-index:3; }
+  .cover .name-row{ display:flex; align-items:center; gap:1.4rem; margin-bottom:2rem; }
+  .mono{
+    width:66px; height:66px; border-radius:20px; flex:none;
+    background:linear-gradient(140deg,var(--gold),var(--coral));
+    display:grid; place-items:center;
+    font-family:var(--display); font-weight:900; font-size:1.7rem; color:#12222a;
+    box-shadow:0 10px 30px rgba(233,162,59,.35);
+    background-size:cover; background-position:center;
+  }
+  .cover .who{ font-weight:800; letter-spacing:.02em; font-size:clamp(1rem,2.2vw,1.35rem); }
+  .cover .who small{ display:block; font-weight:600; opacity:.7; letter-spacing:.04em; font-size:.8em; margin-top:.15rem; }
+  .cover h1{ margin:.2rem 0; }
+  .cover h1 em{ font-style:italic; font-weight:500; color:var(--gold-2); }
+  .cover .hint{ margin-top:2.4rem; display:inline-flex; align-items:center; gap:.7rem;
+    font-weight:800; letter-spacing:.14em; text-transform:uppercase; font-size:.72rem; opacity:.72; }
+  .cover .hint .key{ border:1.5px solid rgba(255,255,255,.5); border-radius:8px; padding:.15rem .55rem;
+    animation:nudge 1.8s var(--ease) infinite; }
+  @keyframes nudge{ 0%,100%{ transform:translateX(0);} 50%{ transform:translateX(5px);} }
+
+  /* ============ Generic layouts ============ */
+  .split{ display:grid; grid-template-columns:1fr 1fr; gap:clamp(1.5rem,4vw,4rem); align-items:center; }
+  .stack > * + *{ margin-top:1.1rem; }
+
+  /* ---- Slide 2: Philippines map ---- */
+  .map-wrap{ display:grid; place-items:center; }
+  .ph-map{ width:min(80%, 360px); height:auto; filter:drop-shadow(0 20px 40px rgba(0,0,0,.35)); }
+  .ph-map .isle{ fill:var(--teal); opacity:.92; }
+  .ph-map .isle.dim{ opacity:.55; }
+  .pin{ animation:none; }
+  .slide.is-active .pin-dot{ animation:ping 2s ease-out infinite; transform-origin:center; }
+  @keyframes ping{ 0%{ r:6; opacity:1;} 70%{ r:26; opacity:0;} 100%{opacity:0;} }
+  .pin-label{ font-family:var(--body); font-weight:800; fill:var(--cream); font-size:15px; }
+
+  /* ---- Slide 3: ceiling diagram ---- */
+  .ceil{ display:grid; grid-template-columns:repeat(3,1fr); gap:clamp(.8rem,2vw,1.8rem); align-items:end;
+    height:min(46vh,360px); margin-top:1rem; }
+  .ceil__col{ position:relative; height:100%; display:flex; flex-direction:column; justify-content:flex-end; align-items:center; }
+  .ceil__cap{ position:absolute; left:0; right:0; height:12px; border-radius:6px;
+    background:repeating-linear-gradient(45deg, rgba(255,255,255,.5) 0 6px, rgba(255,255,255,.15) 6px 12px); }
+  .ceil__col[data-lvl="1"] .ceil__cap{ top:66%; }
+  .ceil__col[data-lvl="2"] .ceil__cap{ top:38%; }
+  .ceil__col[data-lvl="3"] .ceil__cap{ top:6%; background:linear-gradient(90deg,var(--gold),var(--gold-2)); box-shadow:0 0 18px rgba(246,200,98,.6); }
+  .ceil__reach{ width:8px; border-radius:6px 6px 0 0; background:linear-gradient(180deg,var(--gold-2),rgba(246,200,98,.15));
+    align-self:center; margin-bottom:0; transition:height 1s var(--ease); }
+  .ceil__col[data-lvl="1"] .ceil__reach{ height:0; } .slide.is-active .ceil__col[data-lvl="1"] .ceil__reach{ height:31%; }
+  .ceil__col[data-lvl="2"] .ceil__reach{ height:0; } .slide.is-active .ceil__col[data-lvl="2"] .ceil__reach{ height:59%; }
+  .ceil__col[data-lvl="3"] .ceil__reach{ height:0; } .slide.is-active .ceil__col[data-lvl="3"] .ceil__reach{ height:91%; }
+  .ceil__fig{ width:34px; height:34px; border-radius:50% 50% 45% 45%;
+    background:var(--cream); position:relative; margin-bottom:.4rem; opacity:.9; }
+  .ceil__fig::before{ content:""; position:absolute; top:-16px; left:50%; transform:translateX(-50%);
+    width:16px; height:16px; border-radius:50%; background:var(--cream); }
+  .ceil__label{ margin-top:.9rem; text-align:center; font-weight:800; font-size:clamp(.7rem,1.5vw,.92rem); }
+  .ceil__label span{ display:block; font-family:var(--jp); font-weight:500; opacity:.7; font-size:.85em; margin-top:.2rem; }
+
+  /* ---- Slide 6: vicious cycle ---- */
+  .cycle{ position:relative; width:min(88vw,440px); aspect-ratio:1; margin:0 auto; }
+  .cycle svg{ position:absolute; inset:0; width:100%; height:100%; overflow:visible; }
+  .cycle .ring{ fill:none; stroke:var(--coral); stroke-width:3; stroke-dasharray:7 9; opacity:.6; }
+  .slide.is-active .cycle .ring{ animation:spin 26s linear infinite; transform-origin:center; }
+  @keyframes spin{ to{ transform:rotate(360deg);} }
+  .cycle__node{ position:absolute; transform:translate(-50%,-50%); width:38%;
+    text-align:center; background:rgba(255,255,255,.06); border:1.5px solid rgba(255,255,255,.18);
+    border-radius:16px; padding:.85rem .7rem; backdrop-filter:blur(3px); }
+  .cycle__node .ico{ font-size:1.7rem; line-height:1; }
+  .cycle__node b{ display:block; font-family:var(--body); font-weight:800; font-size:.92rem; margin-top:.35rem; }
+  .cycle__node span{ display:block; font-family:var(--jp); font-weight:500; font-size:.72rem; opacity:.72; margin-top:.15rem; }
+  .cycle__node.n1{ left:50%; top:12%; } .cycle__node.n2{ left:86%; top:74%; } .cycle__node.n3{ left:14%; top:74%; }
+  .cycle__lock{ position:absolute; left:50%; top:52%; transform:translate(-50%,-50%);
+    font-size:2.1rem; filter:drop-shadow(0 4px 10px rgba(0,0,0,.4)); }
+
+  /* ---- Slide 7: diskarte ---- */
+  .diskarte{ text-align:center; }
+  .diskarte .word{ font-family:var(--display); font-weight:900; font-size:clamp(3.2rem,15vw,11rem);
+    line-height:.9; letter-spacing:-.03em;
+    background:linear-gradient(120deg,#fff 0%, var(--sun) 45%, var(--gold) 100%);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+    text-shadow:0 8px 40px rgba(246,200,98,.25); }
+  .chips{ display:flex; flex-wrap:wrap; gap:.7rem; justify-content:center; margin-top:2rem; }
+  .chip{ display:inline-flex; align-items:center; gap:.5rem; padding:.6rem 1.1rem; border-radius:999px;
+    background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.2); font-weight:700; font-size:.95rem; }
+  [data-chap="day"] .chip{ background:rgba(20,35,43,.05); border-color:rgba(20,35,43,.12); }
+  .chip .ico{ font-size:1.15rem; }
+
+  /* ---- Slide 8: contrast bars ---- */
+  .bars{ display:flex; flex-direction:column; gap:1.6rem; margin-top:.5rem; }
+  .barrow{ }
+  .barrow__top{ display:flex; justify-content:space-between; align-items:baseline; margin-bottom:.5rem; }
+  .barrow__label{ font-weight:800; font-size:clamp(1rem,2.3vw,1.35rem); }
+  .barrow__label span{ font-family:var(--jp); font-weight:500; opacity:.68; font-size:.72em; margin-left:.5em; }
+  .barrow__val{ font-family:var(--display); font-weight:900; font-size:clamp(1.1rem,3vw,1.9rem); }
+  .track{ height:26px; border-radius:999px; background:rgba(255,255,255,.12); overflow:hidden; }
+  [data-chap="rise"] .track{ background:rgba(255,255,255,.18); }
+  .track .fill{ height:100%; border-radius:999px; width:0; transition:width 1.3s var(--ease); }
+  .fill.slow{ background:repeating-linear-gradient(90deg,var(--coral) 0 18px,var(--coral-2) 18px 36px); }
+  .fill.fast{ background:linear-gradient(90deg,var(--gold),var(--gold-2)); box-shadow:0 0 16px rgba(246,200,98,.55); }
+  .slide.is-active .fill.slow{ width:100%; }
+  .slide.is-active .fill.fast{ width:9%; }
+
+  /* ---- Slide 9: staircase ---- */
+  .stairs{ display:grid; grid-template-columns:repeat(4,1fr); gap:clamp(.5rem,1.6vw,1.4rem);
+    align-items:end; height:min(52vh,420px); margin-top:1.2rem; }
+  .step{ position:relative; display:flex; flex-direction:column; justify-content:flex-end; height:100%; }
+  .step__card{ background:rgba(255,255,255,.9); color:var(--ink); border-radius:14px 14px 0 0;
+    padding:clamp(.7rem,1.4vw,1.15rem); box-shadow:0 -6px 24px rgba(0,0,0,.12);
+    border-bottom:4px solid var(--teal); }
+  .step[data-h="1"] .step__card{ min-height:26%; }
+  .step[data-h="2"] .step__card{ min-height:46%; }
+  .step[data-h="3"] .step__card{ min-height:66%; }
+  .step[data-h="4"] .step__card{ min-height:92%; border-bottom-color:var(--gold);
+    background:linear-gradient(180deg,#fff, #FFF7E6); box-shadow:0 -10px 34px rgba(233,162,59,.35); }
+  .step__yr{ font-family:var(--display); font-weight:900; font-size:clamp(1rem,2.4vw,1.6rem); color:var(--gold-deep); }
+  .step[data-h="4"] .step__yr{ color:var(--coral); }
+  .step__co{ font-weight:900; font-size:clamp(.8rem,1.5vw,1.05rem); margin-top:.2rem; line-height:1.15; }
+  .step__role{ font-weight:700; font-size:clamp(.66rem,1.3vw,.82rem); color:var(--teal); margin-top:.35rem; }
+  .step[data-h="4"] .step__role{ color:var(--coral); }
+  .step__flag{ position:absolute; top:-2.6rem; left:50%; transform:translateX(-50%);
+    font-size:1.9rem; filter:drop-shadow(0 6px 10px rgba(0,0,0,.2)); }
+  .slide.is-active .step__flag{ animation:wave 1.6s var(--ease) infinite; }
+  @keyframes wave{ 0%,100%{ transform:translateX(-50%) rotate(-6deg);} 50%{ transform:translateX(-50%) rotate(8deg);} }
+
+  /* ---- Slide 10: dev -> leader ---- */
+  .transform{ display:grid; grid-template-columns:1fr auto 1fr; gap:clamp(1rem,3vw,2.5rem); align-items:center; margin-top:1rem; }
+  .panel{ background:rgba(255,255,255,.06); border:1.5px solid rgba(20,35,43,.1); border-radius:20px; padding:clamp(1.2rem,3vw,2rem); }
+  [data-chap="day"] .panel{ background:#fff; box-shadow:0 14px 40px rgba(20,35,43,.08); }
+  .panel h3{ font-family:var(--display); font-weight:900; font-size:clamp(1.2rem,2.6vw,1.7rem); }
+  .panel .jp{ font-size:.85rem; opacity:.6; margin-bottom:1rem; }
+  .panel ul{ list-style:none; }
+  .panel li{ display:flex; gap:.6rem; align-items:flex-start; padding:.4rem 0; font-weight:600; font-size:clamp(.85rem,1.7vw,1.02rem); }
+  .panel li::before{ content:""; margin-top:.5em; width:8px; height:8px; border-radius:50%; background:var(--teal); flex:none; }
+  .panel.lead-panel li::before{ background:var(--gold); }
+  .transform .go{ font-size:clamp(2rem,5vw,3.5rem); color:var(--gold); }
+  .figrow{ display:flex; gap:.3rem; align-items:flex-end; margin-bottom:1rem; font-size:2rem; }
+
+  /* ---- Slide 11: projects ---- */
+  .pgrid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(148px,1fr)); gap:.7rem; margin-top:.9rem; }
+  .pcard{ position:relative; background:#fff; border-radius:13px; padding:.8rem .85rem; box-shadow:0 7px 20px rgba(20,35,43,.07);
+    border-top:3px solid var(--teal); transition:transform .3s var(--ease); }
+  .pcard:nth-child(3n+2){ border-top-color:var(--gold); }
+  .pcard:nth-child(3n+3){ border-top-color:var(--coral); }
+  .pcard.ai{ border-top-color:var(--gold); background:linear-gradient(180deg,#fff,#FFF7E7); }
+  .pcard .ico{ font-size:1.55rem; }
+  .pcard b{ display:block; font-size:.88rem; font-weight:900; color:var(--ink); margin-top:.45rem; line-height:1.2; }
+  .pcard span{ display:block; font-family:var(--jp); font-weight:500; font-size:.7rem; color:var(--ink-soft); margin-top:.2rem; }
+  .pcard .ai-tag{ position:absolute; top:.55rem; right:.55rem; font-style:normal;
+    font-family:var(--body); font-weight:900; font-size:.58rem; letter-spacing:.08em; color:#fff;
+    background:linear-gradient(120deg,var(--gold),var(--coral)); padding:.12rem .38rem; border-radius:6px;
+    box-shadow:0 2px 6px rgba(233,162,59,.4); }
+
+  /* ---- Slide 12: skills ---- */
+  .skillgrid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:1rem; margin-top:1.2rem; }
+  .skcol h4{ font-family:var(--body); font-weight:900; text-transform:uppercase; letter-spacing:.12em;
+    font-size:.72rem; color:var(--gold-deep); margin-bottom:.7rem; display:flex; align-items:center; gap:.4rem; }
+  .skitem{ display:flex; justify-content:space-between; align-items:center; padding:.35rem 0; font-weight:700; font-size:.9rem; }
+  .meter{ display:flex; gap:3px; }
+  .meter i{ width:8px; height:8px; border-radius:50%; background:rgba(20,35,43,.15); }
+  .meter i.on{ background:var(--teal); }
+
+  /* ---- Slide: how I build AI (Claude Code setup) ---- */
+  .setup-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:.9rem; margin-top:1.1rem; }
+  .setup-card{ background:#fff; border-radius:16px; padding:1rem 1.15rem; box-shadow:0 8px 22px rgba(20,35,43,.07);
+    border-left:4px solid var(--teal); }
+  .setup-card:nth-child(3n+2){ border-left-color:var(--gold); }
+  .setup-card:nth-child(3n+3){ border-left-color:var(--coral); }
+  .setup-card .ico{ font-size:1.6rem; line-height:1; }
+  .setup-card h4{ font-family:var(--body); font-weight:900; font-size:1.02rem; color:var(--ink); margin-top:.4rem; }
+  .setup-card .jp{ font-family:var(--jp); font-weight:500; font-size:.74rem; color:var(--ink-soft); margin-top:.1rem; }
+  .setup-card .benefit{ display:inline-flex; align-items:center; gap:.35rem; margin-top:.7rem;
+    font-weight:800; font-size:.76rem; color:var(--teal); background:rgba(47,163,154,.1);
+    padding:.24rem .6rem; border-radius:999px; }
+  .setup-result{ margin-top:1.15rem; display:flex; flex-wrap:wrap; align-items:center; gap:.5rem 1.1rem; justify-content:center;
+    background:linear-gradient(120deg, rgba(233,162,59,.16), rgba(47,163,154,.14));
+    border:1px solid rgba(233,162,59,.3); border-radius:16px; padding:.9rem 1.3rem; text-align:center; }
+  .setup-result b{ font-family:var(--display); font-weight:900; font-size:1.05rem; color:var(--ink); }
+  .setup-result .out{ font-weight:800; color:var(--gold-deep); font-size:.98rem; }
+  .setup-result .jp{ font-family:var(--jp); font-weight:500; color:var(--teal); font-size:.85rem; }
+
+  /* ---- Slide 13: values ---- */
+  .vals{ display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:1rem; margin-top:1.4rem; }
+  .val{ background:#fff; border-radius:18px; padding:clamp(1.1rem,2.5vw,1.6rem); text-align:center;
+    box-shadow:0 12px 34px rgba(20,35,43,.08); }
+  .val .ico{ font-size:2.6rem; }
+  .val b{ display:block; font-family:var(--display); font-weight:900; font-size:clamp(1.1rem,2.4vw,1.5rem); margin-top:.5rem; color:var(--ink); }
+  .val .jp{ color:var(--teal); font-weight:700; font-size:1rem; margin-top:.1rem; }
+  .val p{ font-size:.82rem; color:var(--ink-soft); margin-top:.6rem; line-height:1.4; }
+
+  /* ---- Slide 14: thanks ---- */
+  .thanks{ text-align:center; }
+  .thanks .arigato{ font-family:var(--display); font-weight:900; font-size:clamp(2.6rem,10vw,7rem);
+    background:linear-gradient(120deg,var(--coral),var(--gold));
+    -webkit-background-clip:text; background-clip:text; color:transparent; line-height:1; }
+  .thanks .contact{ margin-top:2.2rem; display:inline-flex; flex-wrap:wrap; gap:.6rem 1.8rem; justify-content:center;
+    font-weight:700; }
+  .thanks .contact a{ color:var(--ink); text-decoration:none; border-bottom:2px solid var(--gold); padding-bottom:1px; }
+  .thanks .sun-top{ position:absolute; top:-20vh; left:50%; transform:translateX(-50%);
+    width:70vh; height:70vh; border-radius:50%;
+    background:radial-gradient(circle, rgba(255,220,147,.6) 0%, rgba(246,200,98,.15) 45%, transparent 62%); }
+
+  /* ============ Responsive ============ */
+  @media (max-width: 820px){
+    .split{ grid-template-columns:1fr; }
+    .transform{ grid-template-columns:1fr; }
+    .transform .go{ transform:rotate(90deg); justify-self:center; }
+    .cover .name-row{ flex-wrap:wrap; }
+  }
+  @media (max-width: 560px){
+    .stairs{ height:auto; grid-template-columns:1fr 1fr; }
+    .ceil{ height:min(40vh,300px); }
+    .topbar .brand{ display:none; }
+  }
+
+  /* ============ Reduced motion ============ */
+  @media (prefers-reduced-motion: reduce){
+    *{ animation:none !important; transition:opacity .2s linear, visibility .2s !important; }
+    .r{ opacity:1; transform:none; }
+    .ceil__reach, .track .fill{ transition:none; }
+    .slide.is-active .ceil__col[data-lvl="1"] .ceil__reach{ height:31%; }
+    .slide.is-active .ceil__col[data-lvl="2"] .ceil__reach{ height:59%; }
+    .slide.is-active .ceil__col[data-lvl="3"] .ceil__reach{ height:91%; }
+    .slide.is-active .fill.slow{ width:100%; } .slide.is-active .fill.fast{ width:9%; }
+  }
+
+  /* ============ Print (export to PDF backup) ============ */
+  @media print{
+    body{ overflow:visible; background:#fff; }
+    .topbar,.nav{ display:none; }
+    .slide{ position:relative; inset:auto; opacity:1 !important; visibility:visible !important;
+      transform:none !important; page-break-after:always; height:100vh; }
+    .r{ opacity:1 !important; transform:none !important; }
+  }
+</style>
+</head>
+<body class="theme-dark">
+
+<div class="topbar">
+  <div class="chap" id="chapTag"></div>
+  <div class="brand">Carrie A. Yu · Hipe Japan</div>
+</div>
+
+<main class="deck" id="deck">
+
+  <!-- 1. COVER -->
+  <section class="slide" data-chap="dawn" data-theme="dark" data-chapter="">
+    <div class="cover"><div class="sun" aria-hidden="true"></div>
+      <div class="slide__inner cover__wrap">
+        <div class="name-row r" style="--i:0">
+          <div class="mono" id="mono">CY</div>
+          <div class="who">Carrie A. Yu
+            <small>Software Developer &amp; Team Leader — Cebu, Philippines</small>
+          </div>
+        </div>
+        <div class="eyebrow r" style="--i:1">A Journey · わたしの歩み</div>
+        <h1 class="h-xl r" style="--i:2">From Zero<br>to <em>Leader.</em></h1>
+        <p class="jp-sub r" style="--i:3">ゼロから、リーダーへ。</p>
+        <p class="lead r" style="--i:4; margin-top:1.4rem">How effort, initiative, and <b class="accent">diskarte</b> built a career — step by step.</p>
+        <div class="hint r" style="--i:5"><span>Press</span><span class="key">→</span><span>to begin · 「→」で始まります</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. THE PHILIPPINES -->
+  <section class="slide" data-chap="dawn" data-theme="dark" data-chapter="1 · The Start / 始まり">
+    <div class="slide__inner split">
+      <div class="stack">
+        <div class="eyebrow r" style="--i:0">Where I begin</div>
+        <h2 class="h-lg r" style="--i:1">I come from the Philippines.</h2>
+        <p class="jp-sub r" style="--i:2">私は、フィリピン出身です。</p>
+        <p class="lead r" style="--i:3">A beautiful country — but still developing. Good jobs are few, and they are hard to reach.</p>
+        <p class="jp r muted" style="--i:4; font-size:1rem">発展途上国です。良い仕事は少なく、簡単には手に入りません。</p>
+      </div>
+      <div class="map-wrap r" style="--i:2">
+        <svg class="ph-map" viewBox="0 0 200 300" aria-label="Map of the Philippines with Cebu marked">
+          <path class="isle" d="M70 20 q30 -8 34 20 q6 30 -14 46 q-20 12 -34 -6 q-16 -22 4 -44 z"/>
+          <path class="isle dim" d="M120 70 q18 6 10 30 q-10 20 -26 10 q-8 -22 16 -40 z"/>
+          <path class="isle" d="M95 120 q22 -4 20 26 q-4 22 -24 20 q-16 -20 4 -46 z"/>
+          <path class="isle dim" d="M140 130 q14 10 4 26 q-14 10 -20 -6 q0 -18 16 -20 z"/>
+          <path class="isle" d="M60 200 q40 -14 60 18 q16 40 -20 62 q-46 18 -60 -22 q-12 -40 20 -58 z"/>
+          <circle class="pin-dot" cx="112" cy="150" r="6" fill="#F6C862"/>
+          <circle cx="112" cy="150" r="7" fill="#E86A50" stroke="#fff" stroke-width="2"/>
+          <text class="pin-label" x="124" y="155">Cebu City</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. THE CEILING -->
+  <section class="slide" data-chap="dawn" data-theme="dark" data-chapter="1 · The Start / 始まり">
+    <div class="slide__inner">
+      <div class="eyebrow r" style="--i:0">The invisible ceiling</div>
+      <h2 class="h-md r" style="--i:1">Here, your education decides how high you can go.</h2>
+      <p class="jp-sub r" style="--i:2">学歴で、行ける高さが決まります。</p>
+      <div class="ceil r" style="--i:3" aria-hidden="true">
+        <div class="ceil__col" data-lvl="1">
+          <div class="ceil__cap"></div><div class="ceil__reach"></div><div class="ceil__fig"></div>
+          <div class="ceil__label">No degree<span>学歴なし</span></div>
+        </div>
+        <div class="ceil__col" data-lvl="2">
+          <div class="ceil__cap"></div><div class="ceil__reach"></div><div class="ceil__fig"></div>
+          <div class="ceil__label">High school<span>高校まで</span></div>
+        </div>
+        <div class="ceil__col" data-lvl="3">
+          <div class="ceil__cap"></div><div class="ceil__reach"></div><div class="ceil__fig"></div>
+          <div class="ceil__label" style="color:var(--gold-2)">College degree<span>大学卒業</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. STUDY HARD -->
+  <section class="slide" data-chap="dawn" data-theme="dark" data-chapter="1 · The Start / 始まり">
+    <div class="slide__inner split">
+      <div class="stack">
+        <div class="eyebrow r" style="--i:0">So I studied</div>
+        <h2 class="h-lg r" style="--i:1">I finished — <span class="accent">no matter what.</span></h2>
+        <p class="jp-sub r" style="--i:2">だから、必死に勉強して卒業しました。</p>
+        <p class="lead r" style="--i:3">Education is the key that lifts the ceiling. I earned mine.</p>
+      </div>
+      <div class="r" style="--i:2">
+        <div class="panel" style="text-align:center; background:rgba(246,200,98,.1); border-color:rgba(246,200,98,.3)">
+          <div style="font-size:3.4rem">🎓</div>
+          <div style="font-family:var(--display); font-weight:900; font-size:clamp(1.4rem,3vw,2rem); margin-top:.5rem">BSIT</div>
+          <div style="font-weight:800; opacity:.9; margin-top:.3rem">Bachelor of Science in<br>Information Technology</div>
+          <div style="height:1px; background:rgba(255,255,255,.2); margin:1rem auto; width:60%"></div>
+          <div style="font-weight:800">University of Cebu · 2019</div>
+          <div class="jp muted" style="font-size:.85rem; margin-top:.3rem">情報技術学士 · セブ大学 · 2019年卒業</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. ONLY THE START -->
+  <section class="slide" data-chap="dawn" data-theme="dark" data-chapter="1 · The Start / 始まり">
+    <div class="slide__inner" style="text-align:center">
+      <div class="eyebrow r" style="--i:0; justify-content:center">But wait…</div>
+      <h2 class="h-lg r" style="--i:1">A diploma opens the door.</h2>
+      <p class="r" style="--i:2; font-family:var(--display); font-weight:500; font-style:italic; font-size:clamp(1.3rem,3.5vw,2.4rem); color:var(--gold-2); margin-top:.6rem">But the next room is full of <u>locked</u> doors.</p>
+      <p class="jp-sub r" style="--i:3">卒業は、始まりにすぎません。次は、仕事さがしです。</p>
+      <div class="r" style="--i:4; font-size:clamp(2rem,6vw,3.4rem); letter-spacing:.4rem; margin-top:2rem">🚪🔒 🚪🔒 🚪🔒 🚪🔒</div>
+    </div>
+  </section>
+
+  <!-- 6. THE TRAP -->
+  <section class="slide" data-chap="dawn" data-theme="dark" data-chapter="1 · The Start / 始まり">
+    <div class="slide__inner split">
+      <div class="stack">
+        <div class="eyebrow r" style="--i:0" >The trap</div>
+        <h2 class="h-md r" style="--i:1">Companies want <span class="accent-coral">experience</span> — even from new graduates.</h2>
+        <p class="jp-sub r" style="--i:2">企業は「経験」を求めます。新卒にも、です。</p>
+        <p class="lead r" style="--i:3">No experience → no job. No job → no experience. Many wait <b class="accent-coral">months</b>. Some wait <b class="accent-coral">years</b>.</p>
+        <p class="jp r muted" style="--i:4; font-size:.95rem">何ヶ月も、時には何年も待つ人がいます。</p>
+      </div>
+      <div class="cycle r" style="--i:2" aria-hidden="true">
+        <svg viewBox="0 0 100 100">
+          <circle class="ring" cx="50" cy="50" r="40"/>
+          <defs><marker id="ah" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+            <path d="M0 0 L6 3 L0 6 z" fill="var(--coral-2)"/></marker></defs>
+          <path d="M66 20 A40 40 0 0 1 78 66" fill="none" stroke="var(--coral-2)" stroke-width="2.4" marker-end="url(#ah)"/>
+          <path d="M70 78 A40 40 0 0 1 22 66" fill="none" stroke="var(--coral-2)" stroke-width="2.4" marker-end="url(#ah)"/>
+          <path d="M22 66 A40 40 0 0 1 40 22" fill="none" stroke="var(--coral-2)" stroke-width="2.4" marker-end="url(#ah)"/>
+        </svg>
+        <div class="cycle__lock">🔒</div>
+        <div class="cycle__node n1"><div class="ico">🎓</div><b>New graduate</b><span>新卒</span></div>
+        <div class="cycle__node n2"><div class="ico">🚫</div><b>"No experience"</b><span>経験なし</span></div>
+        <div class="cycle__node n3"><div class="ico">📄</div><b>Rejected</b><span>不採用</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. DISKARTE -->
+  <section class="slide" data-chap="rise" data-theme="dark" data-chapter="2 · The Turning Point / 転機">
+    <div class="slide__inner diskarte">
+      <div class="eyebrow r" style="--i:0; justify-content:center">The Filipino way</div>
+      <div class="word r" style="--i:1">Diskarte</div>
+      <p class="jp-sub r" style="--i:2; font-size:1.4rem">ディスカルテ ＝「自分で道を切りひらく力」</p>
+      <p class="lead r" style="--i:3; margin:1.2rem auto 0; text-align:center">Find a way. Be resourceful. Don't wait — <b class="accent">move.</b></p>
+      <div class="chips r" style="--i:4">
+        <span class="chip"><span class="ico">💻</span>Freelance</span>
+        <span class="chip"><span class="ico">🛠️</span>Side projects</span>
+        <span class="chip"><span class="ico">📚</span>Self-study</span>
+        <span class="chip"><span class="ico">🤝</span>Small gigs</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. MY DISKARTE -->
+  <section class="slide" data-chap="rise" data-theme="dark" data-chapter="2 · The Turning Point / 転機">
+    <div class="slide__inner">
+      <div class="eyebrow r" style="--i:0">My diskarte</div>
+      <h2 class="h-md r" style="--i:1">I did not wait. I started working <span class="accent">while still a student.</span></h2>
+      <p class="jp-sub r" style="--i:2">私は待ちませんでした。学生のうちから働き始めました。</p>
+      <p class="lead r" style="--i:3; margin:.8rem 0 1.6rem">Responsive Tech Solutions · Full Stack Developer · <b>2018</b>. I filled the experience gap early — so the trap never caught me.</p>
+      <div class="bars r" style="--i:4">
+        <div class="barrow">
+          <div class="barrow__top"><div class="barrow__label">Many fresh grads <span>多くの新卒</span></div><div class="barrow__val accent-coral">months → years ⏳</div></div>
+          <div class="track"><div class="fill slow"></div></div>
+        </div>
+        <div class="barrow">
+          <div class="barrow__top"><div class="barrow__label">Me <span>私</span></div><div class="barrow__val accent">1 month ⚡</div></div>
+          <div class="track"><div class="fill fast"></div></div>
+        </div>
+      </div>
+      <p class="jp muted r" style="--i:5; margin-top:1rem; font-size:.95rem">卒業後、次の仕事まで、たった1ヶ月でした。</p>
+    </div>
+  </section>
+
+  <!-- 9. THE CLIMB -->
+  <section class="slide" data-chap="day" data-theme="light" data-chapter="3 · The Climb / 上昇">
+    <div class="slide__inner">
+      <div class="eyebrow r" style="--i:0">Step by step</div>
+      <h2 class="h-md r" style="--i:1">The climb — one job at a time.</h2>
+      <p class="jp-sub r" style="--i:2">キャリアの階段を、一歩ずつ。</p>
+      <div class="stairs r" style="--i:3">
+        <div class="step" data-h="1"><div class="step__card">
+          <div class="step__yr">2018<span style="font-size:.6em">–19</span></div>
+          <div class="step__co">Responsive Tech Solutions</div>
+          <div class="step__role">Full Stack Developer</div>
+        </div></div>
+        <div class="step" data-h="2"><div class="step__card">
+          <div class="step__yr">2019<span style="font-size:.6em">–20</span></div>
+          <div class="step__co">Nerubia / Idearobin</div>
+          <div class="step__role">Software Engineer</div>
+        </div></div>
+        <div class="step" data-h="3"><div class="step__card">
+          <div class="step__yr">2020<span style="font-size:.6em">–21</span></div>
+          <div class="step__co">Ink Shared Solutions</div>
+          <div class="step__role">Web Developer</div>
+        </div></div>
+        <div class="step" data-h="4"><div class="step__flag">🚩</div><div class="step__card">
+          <div class="step__yr">2022<span style="font-size:.6em">–now</span></div>
+          <div class="step__co">Hipe Japan</div>
+          <div class="step__role">Software Developer &amp; Team Leader</div>
+        </div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10. DEV -> LEADER -->
+  <section class="slide" data-chap="day" data-theme="light" data-chapter="3 · The Climb / 上昇">
+    <div class="slide__inner">
+      <div class="eyebrow r" style="--i:0">Growth</div>
+      <h2 class="h-md r" style="--i:1">From developer, to <span class="accent-teal">leader.</span></h2>
+      <p class="jp-sub r" style="--i:2">開発者から、チームを導くリーダーへ。</p>
+      <div class="transform r" style="--i:3">
+        <div class="panel">
+          <div class="figrow">👩‍💻</div>
+          <h3>Then</h3><p class="jp">はじめ</p>
+          <ul>
+            <li>Write code</li>
+            <li>Fix bugs, build features</li>
+            <li>Learn every day</li>
+          </ul>
+        </div>
+        <div class="go" aria-hidden="true">→</div>
+        <div class="panel lead-panel">
+          <div class="figrow">🧑‍🤝‍🧑👩‍💼</div>
+          <h3>Now</h3><p class="jp">いま</p>
+          <ul>
+            <li>Lead &amp; guide the team</li>
+            <li>Plan features &amp; requirements</li>
+            <li>Talk with clients directly</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11. WHAT I BUILD -->
+  <section class="slide" data-chap="day" data-theme="light" data-chapter="3 · The Climb / 上昇">
+    <div class="slide__inner">
+      <div class="eyebrow r" style="--i:0">What I've built</div>
+      <h2 class="h-md r" style="--i:1">From business systems to <span class="accent-teal">AI</span>.</h2>
+      <p class="jp-sub r" style="--i:2">業務システムから、AI まで。</p>
+      <div class="pgrid r" style="--i:3">
+        <div class="pcard"><div class="ico">🧪</div><b>Laboratory Mgmt</b><span>検査管理</span></div>
+        <div class="pcard"><div class="ico">🏨</div><b>Hotel Reservation</b><span>ホテル予約</span></div>
+        <div class="pcard"><div class="ico">💳</div><b>Payment Mgmt</b><span>決済管理</span></div>
+        <div class="pcard"><div class="ico">📈</div><b>Sales Mgmt</b><span>販売管理</span></div>
+        <div class="pcard"><div class="ico">🏗️</div><b>Construction Mgmt</b><span>建設管理</span></div>
+        <div class="pcard"><div class="ico">📅</div><b>Reservation System</b><span>予約管理</span></div>
+        <div class="pcard"><div class="ico">🎓</div><b>Learning Mgmt</b><span>学習管理</span></div>
+        <div class="pcard"><div class="ico">📷</div><b>Camera Mobile App</b><span>カメラアプリ</span></div>
+        <div class="pcard"><div class="ico">🔄</div><b>CMS Migration</b><span>CMS移行</span></div>
+        <div class="pcard"><div class="ico">📝</div><b>CMS</b><span>コンテンツ管理</span></div>
+        <div class="pcard"><div class="ico">🛒</div><b>E-commerce</b><span>ECサイト</span></div>
+        <div class="pcard ai"><em class="ai-tag">AI</em><div class="ico">📋</div><b>Backlog Buddy</b><span>バックログ管理</span></div>
+        <div class="pcard ai"><em class="ai-tag">AI</em><div class="ico">🧾</div><b>Invoice + AI</b><span>請求管理</span></div>
+        <div class="pcard ai"><em class="ai-tag">AI</em><div class="ico">🧑‍💼</div><b>AI Career Platform</b><span>AI採用</span></div>
+        <div class="pcard ai"><em class="ai-tag">AI</em><div class="ico">🎤</div><b>AI Interview Practice</b><span>AI面接練習</span></div>
+        <div class="pcard ai"><em class="ai-tag">AI</em><div class="ico">🗂️</div><b>AI Project Mgmt</b><span>AIプロジェクト管理</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12. SKILLS -->
+  <section class="slide" data-chap="day" data-theme="light" data-chapter="3 · The Climb / 上昇">
+    <div class="slide__inner">
+      <div class="eyebrow r" style="--i:0">My toolbox</div>
+      <h2 class="h-md r" style="--i:1">Full-stack, mobile, cloud &amp; AI.</h2>
+      <p class="jp-sub r" style="--i:2">フルスタック · モバイル · クラウド · AI。</p>
+      <div class="skillgrid r" style="--i:3">
+        <div class="skcol">
+          <h4>🎨 Frontend</h4>
+          <div class="skitem">React.js <span class="meter"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span></div>
+          <div class="skitem">React Native <span class="meter"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span></div>
+          <div class="skitem">TypeScript <span class="meter"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span></div>
+          <div class="skitem">Nuxt / Vue <span class="meter"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span></div>
+        </div>
+        <div class="skcol">
+          <h4>⚙️ Backend</h4>
+          <div class="skitem">Java / Spring <span class="meter"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span></div>
+          <div class="skitem">Node / Express <span class="meter"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span></div>
+          <div class="skitem">PHP / Laravel <span class="meter"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span></div>
+          <div class="skitem">MySQL / Postgres <span class="meter"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span></div>
+        </div>
+        <div class="skcol">
+          <h4>☁️ Cloud &amp; AI</h4>
+          <div class="skitem">AWS <span class="meter"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span></div>
+          <div class="skitem">Docker <span class="meter"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></span></div>
+          <div class="skitem">OpenAI Integ. <span class="meter"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span></div>
+          <div class="skitem">Git / Agile <span class="meter"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 13. HOW I BUILD AI (Claude Code) -->
+  <section class="slide" data-chap="day" data-theme="light" data-chapter="3 · The Climb / 上昇">
+    <div class="slide__inner">
+      <div class="eyebrow r" style="--i:0">How I work — my edge</div>
+      <h2 class="h-md r" style="--i:1">How I build AI faster — with <span class="accent-teal">Claude&nbsp;Code</span>.</h2>
+      <p class="jp-sub r" style="--i:2">Claude Code の設定で、AI 開発をより速く・正確に。</p>
+      <div class="setup-grid r" style="--i:3">
+        <div class="setup-card"><div class="ico">📋</div><h4>CLAUDE.md</h4><div class="jp">プロジェクトのルール</div><span class="benefit">🎯 Consistent output</span></div>
+        <div class="setup-card"><div class="ico">🧩</div><h4>Skills</h4><div class="jp">専門の手順を再利用</div><span class="benefit">♻️ No repeating</span></div>
+        <div class="setup-card"><div class="ico">🤖</div><h4>Subagents</h4><div class="jp">並列で作業を分担</div><span class="benefit">⚡ Work in parallel</span></div>
+        <div class="setup-card"><div class="ico">🔌</div><h4>MCP tools</h4><div class="jp">外部ツール・データ連携</div><span class="benefit">✅ Real, accurate data</span></div>
+        <div class="setup-card"><div class="ico">⚙️</div><h4>Hooks</h4><div class="jp">自動でチェック・整形</div><span class="benefit">🛡️ Fewer mistakes</span></div>
+        <div class="setup-card"><div class="ico">⌨️</div><h4>Custom commands</h4><div class="jp">カスタムコマンド</div><span class="benefit">🚀 1 command, big task</span></div>
+      </div>
+      <div class="setup-result r" style="--i:4">
+        <b>The result</b>
+        <span class="out">→ better output · fewer errors · much faster</span>
+        <span class="jp">結果 → 高品質・ミス削減・高速化</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 14. VALUES -->
+  <section class="slide" data-chap="day" data-theme="light" data-chapter="4 · The Meaning / 意味">
+    <div class="slide__inner">
+      <div class="eyebrow r" style="--i:0">What this journey shows</div>
+      <h2 class="h-md r" style="--i:1">Not the easiest start — but I always found a way.</h2>
+      <p class="jp-sub r" style="--i:2">簡単な始まりではなかった。でも、いつも道を見つけました。</p>
+      <div class="vals r" style="--i:3">
+        <div class="val"><div class="ico">💪</div><b>Effort</b><div class="jp">努力</div><p>Study hard, work hard, never stop.</p></div>
+        <div class="val"><div class="ico">🚀</div><b>Initiative</b><div class="jp">主体性</div><p>Move first, don't wait to be told.</p></div>
+        <div class="val"><div class="ico">💡</div><b>Diskarte</b><div class="jp">工夫</div><p>Be resourceful. Find a way.</p></div>
+        <div class="val"><div class="ico">🌱</div><b>Growth</b><div class="jp">成長</div><p>From coder to team leader.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 15. THANK YOU -->
+  <section class="slide" data-chap="day" data-theme="light" data-chapter="">
+    <div class="thanks"><div class="sun-top" aria-hidden="true"></div>
+      <div class="slide__inner">
+        <div class="eyebrow r" style="--i:0; justify-content:center">Thank you</div>
+        <div class="arigato r" style="--i:1">ありがとう<br>ございます</div>
+        <p class="lead r" style="--i:2; margin:1.4rem auto 0; text-align:center">Thank you for your time. I am ready for the next climb. 🌄</p>
+        <p class="jp-sub r" style="--i:3">次の一歩へ、準備はできています。</p>
+        <div class="contact r" style="--i:4">
+          <span>📧 <a href="mailto:eirracyu12@gmail.com">eirracyu12@gmail.com</a></span>
+          <span>📍 Cebu City, Philippines</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<div class="nav">
+  <div class="arrows"><button id="prev" aria-label="Previous slide">‹</button></div>
+  <div class="trail" aria-hidden="true">
+    <div class="trail__line"></div>
+    <div class="trail__fill" id="trailFill"></div>
+    <div class="trail__dots" id="dots"></div>
+  </div>
+  <div class="arrows"><button id="next" aria-label="Next slide">›</button></div>
+  <div class="counter" id="counter">01 / 15</div>
+</div>
+
+<script>
+(function(){
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const total = slides.length;
+  const dotsWrap = document.getElementById('dots');
+  const trailFill = document.getElementById('trailFill');
+  const counter = document.getElementById('counter');
+  const chapTag = document.getElementById('chapTag');
+  const prevBtn = document.getElementById('prev');
+  const nextBtn = document.getElementById('next');
+  const body = document.body;
+  let current = 0;
+
+  // build dots
+  slides.forEach((s,i)=>{
+    const d = document.createElement('span');
+    d.className = 'dot';
+    d.setAttribute('role','button');
+    d.setAttribute('aria-label','Go to slide '+(i+1));
+    d.addEventListener('click', ()=>go(i));
+    dotsWrap.appendChild(d);
+  });
+  const dots = Array.from(dotsWrap.children);
+  const pad = n => String(n).padStart(2,'0');
+
+  function go(n){
+    current = Math.max(0, Math.min(total-1, n));
+    slides.forEach((s,i)=>{
+      s.classList.toggle('is-active', i===current);
+      s.setAttribute('aria-hidden', i===current ? 'false':'true');
+    });
+    dots.forEach((d,i)=>{
+      d.classList.toggle('active', i===current);
+      d.classList.toggle('done', i<current);
+    });
+    trailFill.style.width = (current/(total-1))*100 + '%';
+    counter.textContent = pad(current+1)+' / '+pad(total);
+    chapTag.textContent = slides[current].getAttribute('data-chapter') || '';
+    const theme = slides[current].getAttribute('data-theme') || 'dark';
+    body.className = 'theme-'+theme;
+    prevBtn.disabled = current===0;
+    nextBtn.disabled = current===total-1;
+    if(history.replaceState){ history.replaceState(null,'','#'+(current+1)); }
+  }
+
+  function next(){ go(current+1); }
+  function prev(){ go(current-1); }
+
+  nextBtn.addEventListener('click', next);
+  prevBtn.addEventListener('click', prev);
+
+  document.addEventListener('keydown', e=>{
+    switch(e.key){
+      case 'ArrowRight': case 'ArrowDown': case 'PageDown': case ' ': case 'Enter':
+        e.preventDefault(); next(); break;
+      case 'ArrowLeft': case 'ArrowUp': case 'PageUp':
+        e.preventDefault(); prev(); break;
+      case 'Home': e.preventDefault(); go(0); break;
+      case 'End': e.preventDefault(); go(total-1); break;
+    }
+  });
+
+  // touch swipe
+  let tx=0, ty=0;
+  document.addEventListener('touchstart', e=>{ tx=e.changedTouches[0].clientX; ty=e.changedTouches[0].clientY; }, {passive:true});
+  document.addEventListener('touchend', e=>{
+    const dx=e.changedTouches[0].clientX-tx, dy=e.changedTouches[0].clientY-ty;
+    if(Math.abs(dx)>50 && Math.abs(dx)>Math.abs(dy)){ dx<0 ? next() : prev(); }
+  }, {passive:true});
+
+  const startAt = parseInt((location.hash||'').replace('#',''),10);
+  go(Number.isInteger(startAt) && startAt>=1 && startAt<=total ? startAt-1 : 0);
+})();
+</script>
+</body>
+</html>
