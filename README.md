@@ -5,6 +5,7 @@ An interactive slide deck telling Carrie A. Yu's career story — **"From Zero t
 ## Contents
 
 - **[index.html](index.html)** — The 15-slide presentation. A "sunrise" theme (dawn → sunrise → daylight) that follows the journey from the Philippines through the climb into leadership and AI work.
+- **[about-me.html](about-me.html)** — A brief, present-focused "About Me" — a 4-slide deck (who I am, where I am now, what I do, now & next). A separate, minimal cobalt-on-paper identity distinct from the sunrise deck.
 - **[qa-cheatsheet.html](qa-cheatsheet.html)** — A quick reference / Q&A cheat sheet to support the talk.
 
 ## Running it

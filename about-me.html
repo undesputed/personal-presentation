@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>About — Carrie A. Yu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  /* ============ Tokens ============ */
+  :root{
+    --paper:#F3F3EE;
+    --card:#FBFBF9;
+    --ink:#17171A;
+    --muted:#6B6B72;
+    --line:#DEDED7;
+    --accent:#1B44FF;
+    --accent-soft:rgba(27,68,255,.10);
+
+    --sans:'Space Grotesk', -apple-system, system-ui, sans-serif;
+    --mono:'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+    --pad: clamp(1.4rem, 5vw, 5.5rem);
+    --maxw: 1080px;
+    --ease: cubic-bezier(.22,.61,.36,1);
+  }
+
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html,body{ height:100%; }
+  body{
+    font-family:var(--sans);
+    background:var(--paper);
+    color:var(--ink);
+    overflow:hidden;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+
+  /* ============ Slide system ============ */
+  .deck{ position:fixed; inset:0; }
+  .slide{
+    position:absolute; inset:0;
+    display:flex; flex-direction:column; justify-content:center;
+    padding:var(--pad);
+    padding-top: clamp(4rem, 8vh, 6rem);
+    padding-bottom: clamp(4.5rem, 9vh, 6.5rem);
+    opacity:0; visibility:hidden;
+    transform:translateY(10px);
+    transition:opacity .55s var(--ease), transform .55s var(--ease), visibility .55s;
+  }
+  .slide.is-active{ opacity:1; visibility:visible; transform:none; z-index:2; }
+  .inner{ width:100%; max-width:var(--maxw); margin:0 auto; }
+
+  /* ============ Type helpers ============ */
+  .eyebrow{
+    font-family:var(--mono); font-weight:500;
+    text-transform:uppercase; letter-spacing:.2em;
+    font-size:clamp(.66rem,1.3vw,.76rem);
+    color:var(--muted);
+    display:inline-flex; align-items:center; gap:.7em;
+    margin-bottom:1.4rem;
+  }
+  .eyebrow::before{ content:""; width:22px; height:1px; background:var(--ink); opacity:.4; }
+
+  h1,h2{ font-family:var(--sans); font-weight:600; line-height:1; letter-spacing:-.02em; }
+  .display{ font-size:clamp(3rem, 11vw, 7.6rem); font-weight:700; letter-spacing:-.035em; }
+  .h-lg{ font-size:clamp(2rem, 6.5vw, 4.4rem); font-weight:600; }
+  .h-md{ font-size:clamp(1.6rem, 4.4vw, 3rem); font-weight:600; }
+
+  .lead{ font-size:clamp(1.02rem, 2.1vw, 1.4rem); line-height:1.5; color:var(--muted); max-width:40ch; font-weight:400; }
+  .ink{ color:var(--ink); }
+  .accent{ color:var(--accent); }
+
+  /* the one signature: present-tense "now" dot */
+  .now{
+    display:inline-flex; align-items:center; gap:.6rem;
+    font-family:var(--mono); font-weight:500; font-size:.78rem;
+    text-transform:uppercase; letter-spacing:.14em; color:var(--ink);
+  }
+  .now__dot{ position:relative; width:9px; height:9px; border-radius:50%; background:var(--accent); flex:none; }
+  .now__dot::after{
+    content:""; position:absolute; inset:0; border-radius:50%; background:var(--accent);
+    animation:pulse 2.6s var(--ease) infinite;
+  }
+  @keyframes pulse{ 0%{ transform:scale(1); opacity:.55; } 100%{ transform:scale(3.6); opacity:0; } }
+
+  /* marker under the name */
+  .marker{ display:block; width:clamp(64px,12vw,120px); height:5px; background:var(--accent); border-radius:2px; margin:1.4rem 0; }
+
+  /* ============ Chrome ============ */
+  .topbar{
+    position:fixed; top:0; left:0; right:0; z-index:20;
+    display:flex; justify-content:space-between; align-items:center;
+    padding: clamp(1rem,2.4vh,1.6rem) var(--pad);
+    font-family:var(--mono); font-weight:500;
+    text-transform:uppercase; letter-spacing:.16em; font-size:.68rem;
+    color:var(--muted); pointer-events:none;
+  }
+  .topbar .brand{ color:var(--ink); }
+  .topbar .brand b{ color:var(--accent); font-weight:700; }
+
+  .nav{
+    position:fixed; left:0; right:0; bottom:0; z-index:20;
+    display:flex; align-items:center; gap:1.1rem;
+    padding: 0 var(--pad) clamp(1.1rem,2.6vh,1.6rem);
+  }
+  .arrows{ display:flex; gap:.5rem; pointer-events:auto; }
+  .arrows button{
+    width:42px; height:42px; border-radius:50%;
+    border:1px solid var(--line); background:transparent; color:var(--ink);
+    font-size:1.05rem; cursor:pointer;
+    display:grid; place-items:center; transition:border-color .2s, background .2s, transform .15s;
+    font-family:var(--sans);
+  }
+  .arrows button:hover{ border-color:var(--ink); }
+  .arrows button:active{ transform:scale(.92); }
+  .arrows button:disabled{ opacity:.28; cursor:default; }
+  .arrows button:disabled:hover{ border-color:var(--line); }
+
+  .dots{ display:flex; align-items:center; gap:.5rem; flex:1; }
+  .dot{ width:26px; height:3px; border-radius:2px; background:var(--line); cursor:pointer;
+    transition:background .3s, transform .2s; pointer-events:auto; }
+  .dot:hover{ background:var(--muted); }
+  .dot.active{ background:var(--accent); }
+  .dot.done{ background:var(--muted); }
+
+  .counter{ font-family:var(--mono); font-weight:500; font-size:.72rem; letter-spacing:.1em;
+    color:var(--muted); min-width:62px; text-align:right; }
+  .counter b{ color:var(--ink); font-weight:700; }
+
+  :focus-visible{ outline:2px solid var(--accent); outline-offset:3px; border-radius:3px; }
+
+  /* ============ Reveal ============ */
+  .r{ opacity:0; transform:translateY(16px); }
+  .slide.is-active .r{ animation:rise .65s var(--ease) forwards; animation-delay: calc(var(--i,0) * 90ms); }
+  @keyframes rise{ to{ opacity:1; transform:none; } }
+
+  /* ============ Slide 1 — cover ============ */
+  .cover .now{ margin-bottom:1.6rem; }
+  .cover .display{ margin:0; }
+  .cover .display .last{ color:var(--accent); }
+  .cover .meta{ display:flex; flex-wrap:wrap; gap:.5rem 1.4rem; margin-top:.4rem;
+    font-family:var(--mono); font-size:.82rem; color:var(--muted); letter-spacing:.02em; }
+  .cover .meta span{ display:inline-flex; align-items:center; gap:.45rem; }
+
+  /* ============ Slide 2 — where I am now ============ */
+  .co-head{ display:flex; flex-wrap:wrap; align-items:baseline; gap:.6rem 1.2rem; }
+  .co-role{ font-family:var(--mono); font-size:clamp(.85rem,1.8vw,1.05rem); color:var(--muted); }
+  .tl{ display:flex; align-items:center; gap:clamp(.4rem,1.6vw,1rem); margin:2.2rem 0;
+    font-family:var(--mono); font-size:clamp(.78rem,1.6vw,.95rem); flex-wrap:wrap; }
+  .tl__yr{ color:var(--muted); font-weight:500; }
+  .tl__sep{ flex:1; min-width:14px; height:1px; background:var(--line); }
+  .tl__yr.is-now{ color:var(--accent); font-weight:700; display:inline-flex; align-items:center; gap:.45rem; }
+  .tl__yr.is-now::before{ content:""; width:7px; height:7px; border-radius:50%; background:var(--accent); }
+
+  .doing{ list-style:none; display:grid; gap:.7rem; max-width:52ch; }
+  .doing li{ display:flex; gap:.9rem; align-items:baseline; font-size:clamp(1rem,2vw,1.25rem); font-weight:400; }
+  .doing li::before{ content:"→"; color:var(--accent); font-family:var(--mono); font-weight:700; }
+
+  /* ============ Slide 3 — what I do ============ */
+  .stack-list{ display:grid; gap:0; margin:2rem 0 1.8rem; border-top:1px solid var(--line); max-width:760px; }
+  .row{ display:grid; grid-template-columns: 130px 1fr; gap:1rem 1.4rem;
+    padding:1rem 0; border-bottom:1px solid var(--line); align-items:baseline; }
+  .row__k{ font-family:var(--mono); font-size:.72rem; text-transform:uppercase; letter-spacing:.14em; color:var(--accent); }
+  .row__v{ font-size:clamp(1rem,2vw,1.28rem); font-weight:500; letter-spacing:-.01em; }
+  .row__v .sep{ color:var(--line); margin:0 .1em; }
+
+  /* ============ Slide 4 — now & next ============ */
+  .closing .now{ margin-bottom:1.8rem; }
+  .closing .statement{ font-size:clamp(1.9rem,6vw,4.2rem); font-weight:600; line-height:1.05; letter-spacing:-.025em; max-width:16ch; }
+  .closing .statement b{ color:var(--accent); font-weight:600; }
+  .contact{ margin-top:2.4rem; display:flex; flex-wrap:wrap; gap:.6rem 1.8rem;
+    font-family:var(--mono); font-size:.9rem; }
+  .contact a{ color:var(--ink); text-decoration:none; border-bottom:1px solid var(--accent); padding-bottom:2px; }
+  .contact a:hover{ color:var(--accent); }
+  .contact .place{ color:var(--muted); }
+
+  /* ============ Responsive ============ */
+  @media (max-width: 620px){
+    .row{ grid-template-columns: 1fr; gap:.35rem; }
+    .topbar .section{ display:none; }
+    .dot{ width:18px; }
+  }
+
+  /* ============ Reduced motion ============ */
+  @media (prefers-reduced-motion: reduce){
+    *{ animation:none !important; transition:opacity .2s linear, visibility .2s !important; }
+    .r{ opacity:1; transform:none; }
+    .now__dot::after{ display:none; }
+  }
+
+  /* ============ Print ============ */
+  @media print{
+    body{ overflow:visible; background:#fff; }
+    .topbar,.nav{ display:none; }
+    .slide{ position:relative; inset:auto; opacity:1 !important; visibility:visible !important;
+      transform:none !important; page-break-after:always; min-height:100vh; }
+    .r{ opacity:1 !important; transform:none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand"><b>◆</b> Carrie A. Yu</div>
+  <div class="section" id="sectionTag"></div>
+</div>
+
+<main class="deck" id="deck">
+
+  <!-- 1. WHO I AM -->
+  <section class="slide" data-section="Who I am">
+    <div class="inner cover">
+      <div class="now r" style="--i:0"><span class="now__dot"></span> Currently · Software Developer &amp; Team Leader</div>
+      <h1 class="display r" style="--i:1">Carrie<br>A. <span class="last">Yu</span></h1>
+      <span class="marker r" style="--i:2"></span>
+      <p class="lead r" style="--i:3">A developer and team leader who turns ideas into real products — from business systems to AI.</p>
+      <div class="meta r" style="--i:4">
+        <span>📍 Cebu City, Philippines</span>
+        <span>💼 Hipe Japan</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. WHERE I AM NOW -->
+  <section class="slide" data-section="Where I am now">
+    <div class="inner">
+      <div class="eyebrow r" style="--i:0">Where I am now</div>
+      <div class="co-head r" style="--i:1">
+        <h2 class="h-lg">Hipe Japan</h2>
+        <span class="co-role">Software Developer &amp; Team Leader</span>
+      </div>
+      <div class="tl r" style="--i:2" aria-label="Timeline: at Hipe Japan since 2022, now in the 4th year">
+        <span class="tl__yr">2022</span><span class="tl__sep"></span>
+        <span class="tl__yr">2023</span><span class="tl__sep"></span>
+        <span class="tl__yr">2024</span><span class="tl__sep"></span>
+        <span class="tl__yr">2025</span><span class="tl__sep"></span>
+        <span class="tl__yr is-now">2026 · 4th year</span>
+      </div>
+      <ul class="doing r" style="--i:3">
+        <li>Lead and guide the team</li>
+        <li>Plan features and requirements</li>
+        <li>Talk with clients directly</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 3. WHAT I DO -->
+  <section class="slide" data-section="What I do">
+    <div class="inner">
+      <div class="eyebrow r" style="--i:0">What I do</div>
+      <h2 class="h-md r" style="--i:1">Full-stack, mobile, cloud &amp; AI.</h2>
+      <div class="stack-list r" style="--i:2">
+        <div class="row">
+          <div class="row__k">Frontend</div>
+          <div class="row__v">React <span class="sep">·</span> React Native <span class="sep">·</span> TypeScript <span class="sep">·</span> Vue / Nuxt</div>
+        </div>
+        <div class="row">
+          <div class="row__k">Backend</div>
+          <div class="row__v">Java / Spring <span class="sep">·</span> Node <span class="sep">·</span> Laravel <span class="sep">·</span> MySQL / Postgres</div>
+        </div>
+        <div class="row">
+          <div class="row__k">Cloud &amp; AI</div>
+          <div class="row__v">AWS <span class="sep">·</span> Docker <span class="sep">·</span> OpenAI <span class="sep">·</span> Claude&nbsp;Code</div>
+        </div>
+      </div>
+      <p class="lead r" style="--i:3">I build business systems through to AI products — and ship faster with an AI-assisted workflow.</p>
+    </div>
+  </section>
+
+  <!-- 4. NOW & NEXT -->
+  <section class="slide" data-section="Now &amp; next">
+    <div class="inner closing">
+      <div class="now r" style="--i:0"><span class="now__dot"></span> Now &amp; next</div>
+      <p class="statement r" style="--i:1">Leading a team. Building AI products. <b>Ready for the next climb.</b></p>
+      <div class="contact r" style="--i:2">
+        <a href="mailto:eirracyu12@gmail.com">eirracyu12@gmail.com</a>
+        <span class="place">Cebu City, Philippines</span>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<div class="nav">
+  <div class="arrows"><button id="prev" aria-label="Previous slide">‹</button></div>
+  <div class="dots" id="dots"></div>
+  <div class="arrows"><button id="next" aria-label="Next slide">›</button></div>
+  <div class="counter" id="counter"><b>01</b> / 04</div>
+</div>
+
+<script>
+(function(){
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const total = slides.length;
+  const dotsWrap = document.getElementById('dots');
+  const counter = document.getElementById('counter');
+  const sectionTag = document.getElementById('sectionTag');
+  const prevBtn = document.getElementById('prev');
+  const nextBtn = document.getElementById('next');
+  let current = 0;
+
+  slides.forEach((s,i)=>{
+    const d = document.createElement('span');
+    d.className = 'dot';
+    d.setAttribute('role','button');
+    d.setAttribute('tabindex','0');
+    d.setAttribute('aria-label','Go to slide '+(i+1));
+    d.addEventListener('click', ()=>go(i));
+    d.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); go(i); } });
+    dotsWrap.appendChild(d);
+  });
+  const dots = Array.from(dotsWrap.children);
+  const pad = n => String(n).padStart(2,'0');
+
+  function go(n){
+    current = Math.max(0, Math.min(total-1, n));
+    slides.forEach((s,i)=>{
+      s.classList.toggle('is-active', i===current);
+      s.setAttribute('aria-hidden', i===current ? 'false':'true');
+    });
+    dots.forEach((d,i)=>{
+      d.classList.toggle('active', i===current);
+      d.classList.toggle('done', i<current);
+    });
+    counter.innerHTML = '<b>'+pad(current+1)+'</b> / '+pad(total);
+    sectionTag.textContent = slides[current].getAttribute('data-section') || '';
+    prevBtn.disabled = current===0;
+    nextBtn.disabled = current===total-1;
+    if(history.replaceState){ history.replaceState(null,'','#'+(current+1)); }
+  }
+
+  const next = ()=>go(current+1);
+  const prev = ()=>go(current-1);
+  nextBtn.addEventListener('click', next);
+  prevBtn.addEventListener('click', prev);
+
+  document.addEventListener('keydown', e=>{
+    switch(e.key){
+      case 'ArrowRight': case 'ArrowDown': case 'PageDown': case ' ': case 'Enter':
+        e.preventDefault(); next(); break;
+      case 'ArrowLeft': case 'ArrowUp': case 'PageUp':
+        e.preventDefault(); prev(); break;
+      case 'Home': e.preventDefault(); go(0); break;
+      case 'End': e.preventDefault(); go(total-1); break;
+    }
+  });
+
+  let tx=0, ty=0;
+  document.addEventListener('touchstart', e=>{ tx=e.changedTouches[0].clientX; ty=e.changedTouches[0].clientY; }, {passive:true});
+  document.addEventListener('touchend', e=>{
+    const dx=e.changedTouches[0].clientX-tx, dy=e.changedTouches[0].clientY-ty;
+    if(Math.abs(dx)>50 && Math.abs(dx)>Math.abs(dy)){ dx<0 ? next() : prev(); }
+  }, {passive:true});
+
+  const startAt = parseInt((location.hash||'').replace('#',''),10);
+  go(Number.isInteger(startAt) && startAt>=1 && startAt<=total ? startAt-1 : 0);
+})();
+</script>
+</body>
+</html>
