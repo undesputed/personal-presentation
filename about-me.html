@@ -161,6 +161,13 @@
   /* ============ Slide 3 — about me ============ */
   .lead.summary{ max-width:56ch; color:var(--ink); margin-top:1.6rem; }
 
+  /* ============ Slide 4 — outside work ============ */
+  .hobbies{ display:grid; gap:0; margin:2.1rem 0 0; border-top:1px solid var(--line); max-width:720px; }
+  .hobby{ display:grid; grid-template-columns:120px 1fr; gap:1rem 1.4rem;
+    padding:1.05rem 0; border-bottom:1px solid var(--line); align-items:baseline; }
+  .hobby__k{ font-family:var(--mono); font-size:.72rem; text-transform:uppercase; letter-spacing:.14em; color:var(--accent); }
+  .hobby__v{ font-size:clamp(1rem,2vw,1.28rem); font-weight:500; letter-spacing:-.01em; }
+
   /* ============ Slide 4 — now & next ============ */
   .closing .now{ margin-bottom:1.8rem; }
   .closing .statement{ font-size:clamp(1.9rem,6vw,4.2rem); font-weight:600; line-height:1.05; letter-spacing:-.025em; max-width:16ch; }
@@ -173,6 +180,7 @@
 
   /* ============ Responsive ============ */
   @media (max-width: 620px){
+    .hobby{ grid-template-columns:1fr; gap:.35rem; }
     .topbar .section{ display:none; }
     .dot{ width:18px; }
   }
@@ -251,7 +259,29 @@
     </div>
   </section>
 
-  <!-- 4. THANKS -->
+  <!-- 4. OUTSIDE WORK -->
+  <section class="slide" data-section="Outside work">
+    <div class="inner">
+      <div class="eyebrow r" style="--i:0">Outside work</div>
+      <h2 class="h-md r" style="--i:1">A few things I enjoy.</h2>
+      <div class="hobbies r" style="--i:2">
+        <div class="hobby">
+          <div class="hobby__k">Reading</div>
+          <div class="hobby__v">Manga</div>
+        </div>
+        <div class="hobby">
+          <div class="hobby__k">Games</div>
+          <div class="hobby__v">Minecraft, Dota, Valorant, and more — on mobile and PC</div>
+        </div>
+        <div class="hobby">
+          <div class="hobby__k">Sports</div>
+          <div class="hobby__v">Tennis, table tennis, and badminton</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. THANKS -->
   <section class="slide" data-section="Thank you">
     <div class="inner closing">
       <div class="now r" style="--i:0"><span class="now__dot"></span> Thank you</div>
@@ -269,7 +299,7 @@
   <div class="arrows"><button id="prev" aria-label="Previous slide">‹</button></div>
   <div class="dots" id="dots"></div>
   <div class="arrows"><button id="next" aria-label="Next slide">›</button></div>
-  <div class="counter" id="counter"><b>01</b> / 04</div>
+  <div class="counter" id="counter"><b>01</b> / 05</div>
 </div>
 
 <script>

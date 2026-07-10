@@ -196,9 +196,34 @@
     animation:nudge 1.8s var(--ease) infinite; }
   @keyframes nudge{ 0%,100%{ transform:translateX(0);} 50%{ transform:translateX(5px);} }
 
+  /* ============ Hello / welcome (opening) ============ */
+  .hello{ position:relative; z-index:3; }
+  .hello__wave{ font-size:clamp(2.6rem,7vw,4.4rem); line-height:1; }
+  .hello__wave .wavehand{ display:inline-block; transform-origin:70% 80%; }
+  .slide.is-active .hello__wave .wavehand{ animation:wavehand 2.2s var(--ease) .5s 2; }
+  @keyframes wavehand{ 0%,100%{ transform:rotate(0);} 15%{ transform:rotate(16deg);} 30%{ transform:rotate(-8deg);}
+    45%{ transform:rotate(14deg);} 60%{ transform:rotate(-4deg);} 75%{ transform:rotate(8deg);} }
+  .hello h1{ margin:.5rem 0 .3rem; }
+  .hello__langs{ font-family:var(--jp); font-weight:500; color:var(--gold-2); opacity:.95;
+    font-size:clamp(1rem,2.4vw,1.6rem); letter-spacing:.02em; }
+  .hello .hint{ margin-top:2.4rem; display:inline-flex; align-items:center; gap:.7rem;
+    font-weight:800; letter-spacing:.14em; text-transform:uppercase; font-size:.72rem; opacity:.72; }
+  .hello .hint .key{ border:1.5px solid rgba(255,255,255,.5); border-radius:8px; padding:.15rem .55rem;
+    animation:nudge 1.8s var(--ease) infinite; }
+
   /* ============ Generic layouts ============ */
   .split{ display:grid; grid-template-columns:1fr 1fr; gap:clamp(1.5rem,4vw,4rem); align-items:center; }
   .stack > * + *{ margin-top:1.1rem; }
+
+  /* ---- Intro (self-introduction): interactive hobbies ---- */
+  .hobbies-chips{ display:flex; flex-wrap:wrap; gap:.7rem; }
+  .hchip{ display:inline-flex; align-items:center; gap:.5rem; padding:.62rem 1.05rem; border-radius:999px;
+    background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.2); font-weight:700; font-size:.95rem;
+    cursor:default; transition:transform .28s var(--ease), background .28s, border-color .28s, box-shadow .28s; }
+  .hchip:hover, .hchip:focus-visible{ transform:translateY(-5px); background:rgba(246,200,98,.16);
+    border-color:var(--gold-2); box-shadow:0 12px 26px rgba(233,162,59,.28); outline:none; }
+  .hchip .hico{ font-size:1.2rem; transition:transform .3s var(--ease); }
+  .hchip:hover .hico, .hchip:focus-visible .hico{ transform:scale(1.28) rotate(-8deg); }
 
   /* ---- Slide 2: Philippines map ---- */
   .map-wrap{ display:grid; place-items:center; }
@@ -417,6 +442,20 @@
 
 <main class="deck" id="deck">
 
+  <!-- 0. HELLO / WELCOME -->
+  <section class="slide" data-chap="dawn" data-theme="dark" data-chapter="">
+    <div class="slide__inner" style="text-align:center">
+      <div class="hello">
+        <div class="hello__wave r" style="--i:0" aria-hidden="true"><span class="wavehand">👋</span></div>
+        <h1 class="h-xl r" style="--i:1">Hello.</h1>
+        <p class="hello__langs r" style="--i:2">こんにちは · Kumusta</p>
+        <p class="lead r" style="--i:3; margin:1.5rem auto 0; text-align:center">Welcome, and thank you for being here. Let me share a short story.</p>
+        <p class="jp-sub r" style="--i:4">ようこそ。少しだけ、私の物語を聞いてください。</p>
+        <div class="hint r" style="--i:5"><span>Press</span><span class="key">→</span><span>to begin · 「→」で始まります</span></div>
+      </div>
+    </div>
+  </section>
+
   <!-- 1. COVER -->
   <section class="slide" data-chap="dawn" data-theme="dark" data-chapter="">
     <div class="cover"><div class="sun" aria-hidden="true"></div>
@@ -431,7 +470,30 @@
         <h1 class="h-xl r" style="--i:2">From Zero<br>to <em>Leader.</em></h1>
         <p class="jp-sub r" style="--i:3">ゼロから、リーダーへ。</p>
         <p class="lead r" style="--i:4; margin-top:1.4rem">How effort, initiative, and <b class="accent">diskarte</b> built a career — step by step.</p>
-        <div class="hint r" style="--i:5"><span>Press</span><span class="key">→</span><span>to begin · 「→」で始まります</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTRO — SELF-INTRODUCTION -->
+  <section class="slide" data-chap="dawn" data-theme="dark" data-chapter="Introduction · 自己紹介">
+    <div class="slide__inner split">
+      <div class="stack">
+        <div class="eyebrow r" style="--i:0">First, hello</div>
+        <h2 class="h-lg r" style="--i:1">A little about me.</h2>
+        <p class="jp-sub r" style="--i:2">まずは、かんたんに自己紹介させてください。</p>
+        <p class="lead r" style="--i:3">I'm Carrie, a software engineer with 6 years of experience. But I'm more than my work — here's a little of what I love outside of it.</p>
+        <p class="jp r muted" style="--i:4; font-size:1rem">ソフトウェアエンジニアとして6年になります。でも、仕事だけではありません。ここでは、私の好きなことを少しだけ。</p>
+      </div>
+      <div class="panel r" style="--i:2; border-color:rgba(255,255,255,.16)">
+        <div class="eyebrow" style="margin-bottom:1.2rem">Off the clock · 趣味</div>
+        <div class="hobbies-chips">
+          <span class="hchip" tabindex="0"><span class="hico">📖</span> Reading manga</span>
+          <span class="hchip" tabindex="0"><span class="hico">🎮</span> Video games</span>
+          <span class="hchip" tabindex="0"><span class="hico">🎾</span> Tennis</span>
+          <span class="hchip" tabindex="0"><span class="hico">🏓</span> Table tennis</span>
+          <span class="hchip" tabindex="0"><span class="hico">🏸</span> Badminton</span>
+        </div>
+        <p class="jp muted" style="margin-top:1.3rem; font-size:.85rem">マンガを読んだり、ゲームをしたり。テニス・卓球・バドミントンもします。</p>
       </div>
     </div>
   </section>
@@ -764,7 +826,7 @@
     <div class="trail__dots" id="dots"></div>
   </div>
   <div class="arrows"><button id="next" aria-label="Next slide">›</button></div>
-  <div class="counter" id="counter">01 / 15</div>
+  <div class="counter" id="counter">01 / 17</div>
 </div>
 
 <script>
