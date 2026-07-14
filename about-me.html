@@ -137,12 +137,16 @@
   @keyframes rise{ to{ opacity:1; transform:none; } }
 
   /* ============ Slide 1 — cover ============ */
+  .cover-grid{ display:grid; grid-template-columns:1.15fr .85fr; gap:clamp(1.2rem,3vw,2.2rem); align-items:center; }
   .cover .now{ margin-bottom:1.6rem; }
   .cover .display{ margin:0; }
   .cover .display .last{ color:var(--accent); }
   .cover .meta{ display:flex; flex-wrap:wrap; gap:.5rem 1.4rem; margin-top:.4rem;
     font-family:var(--mono); font-size:.82rem; color:var(--muted); letter-spacing:.02em; }
   .cover .meta span{ display:inline-flex; align-items:center; gap:.45rem; }
+  .cover-photo{ justify-self:end; max-width:320px; width:100%; }
+  .cover-photo img{ width:100%; aspect-ratio:1/1; object-fit:cover; border-radius:50%;
+    border:1px solid var(--line); box-shadow:0 18px 40px rgba(23,23,26,.12); }
 
   /* ============ Slide 2 — where I am now ============ */
   .co-head{ display:flex; flex-wrap:wrap; align-items:baseline; gap:.6rem 1.2rem; }
@@ -181,6 +185,8 @@
   /* ============ Responsive ============ */
   @media (max-width: 620px){
     .hobby{ grid-template-columns:1fr; gap:.35rem; }
+    .cover-grid{ grid-template-columns:1fr; }
+    .cover-photo{ justify-self:start; max-width:260px; }
     .topbar .section{ display:none; }
     .dot{ width:18px; }
   }
@@ -214,13 +220,20 @@
   <!-- 1. WHO I AM -->
   <section class="slide" data-section="Who I am">
     <div class="inner cover">
-      <div class="now r" style="--i:0"><span class="now__dot"></span> Currently · Software Developer &amp; Team Leader</div>
-      <h1 class="display r" style="--i:1">Carrie<br>A. <span class="last">Yu</span></h1>
-      <span class="marker r" style="--i:2"></span>
-      <p class="lead r" style="--i:3">I'm a software developer and team leader at Hipe Japan. I'm from Cebu, Philippines.</p>
-      <div class="meta r" style="--i:4">
-        <span>📍 Cebu City, Philippines</span>
-        <span>💼 Hipe Japan</span>
+      <div class="cover-grid">
+        <div>
+          <div class="now r" style="--i:0"><span class="now__dot"></span> Currently · Software Developer &amp; Team Leader</div>
+          <h1 class="display r" style="--i:1">Carrie<br>A. <span class="last">Yu</span></h1>
+          <span class="marker r" style="--i:2"></span>
+          <p class="lead r" style="--i:3">I'm a software developer and team leader at Hipe Japan. I'm from Cebu, Philippines.</p>
+          <div class="meta r" style="--i:4">
+            <span>📍 Cebu City, Philippines</span>
+            <span>💼 Hipe Japan</span>
+          </div>
+        </div>
+        <div class="cover-photo r" style="--i:1.2">
+          <img src="personal.png" alt="Carrie Yu portrait" />
+        </div>
       </div>
     </div>
   </section>
