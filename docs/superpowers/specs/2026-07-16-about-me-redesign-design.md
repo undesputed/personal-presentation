@@ -94,7 +94,7 @@ Copy is tightened from Carrie’s draft for slide density. Implementers may ligh
 ### 5 — Games
 - Headline EN: Games I love
 - JP sub: 好きなゲーム
-- Body EN: I enjoy Minecraft, Dota, Valorant, and many other games. Gaming is one of my favorite ways to relax after work and spend time with friends.
+- Body EN: I enjoy Minecraft, Dota 2, Valorant, and many other games. Gaming is one of my favorite ways to relax after work and spend time with friends.
 - Layout: text column + 3-image grid. Alts: `Minecraft`, `Dota 2`, `Valorant`. No captions.
 
 ### 6 — Anime / manga
@@ -135,8 +135,9 @@ Copy is tightened from Carrie’s draft for slide density. Implementers may ligh
 ### New / adapted for about-me
 - Cover split: copy + circular portrait (not the monogram-only cover from `index.html`)
 - Interest image grids for slides 4–6:
+  - Desktop: text left, image grid right
   - Object-fit cover, consistent radius matching sunrise day panels
-  - Captions optional (sport/game/title) in small mono/label style if needed for clarity
+  - No visible captions — accessibility via `alt` only (see content contract)
   - Mobile: stack text above grid; grids become 1–2 columns
 - No hero overlays, no card clutter on cover; cards only if needed for interaction (they are not needed)
 
