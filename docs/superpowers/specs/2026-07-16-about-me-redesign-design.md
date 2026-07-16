@@ -38,8 +38,8 @@
 
 ## Slide map
 
-| # | `data-chap` | Theme | `data-chapter` (topbar) | Slide | Media |
-|---|-------------|---------|-------------------------|-------|-------|
+| # | `data-chap` | `data-theme` | `data-chapter` (topbar) | Slide | Media |
+|---|-------------|--------------|-------------------------|-------|-------|
 | 1 | dawn | dark | *(empty)* | Cover / hello | `personal.png` (circular portrait) |
 | 2 | dawn | dark | Who I am · 自己紹介 | Who I am | — |
 | 3 | rise | dark | Career · キャリア | Career | tech chips only |
@@ -133,12 +133,12 @@ Copy is tightened from Carrie’s draft for slide density. Implementers may ligh
 - `prefers-reduced-motion` and print styles
 
 ### New / adapted for about-me
-- Cover split: copy + circular portrait (not the monogram-only cover from `index.html`)
+- Cover split: text left, circular portrait right on desktop; portrait stacks below title on mobile
 - Interest image grids for slides 4–6:
   - Desktop: text left, image grid right
   - Object-fit cover, consistent radius matching sunrise day panels
   - No visible captions — accessibility via `alt` only (see content contract)
-  - Mobile: stack text above grid; grids become 1–2 columns
+  - Mobile: stack text above grid; 3-up grids use 2+1 (two on first row, one on second); 2-up grids stay side-by-side until very narrow, then stack
 - No hero overlays, no card clutter on cover; cards only if needed for interaction (they are not needed)
 
 ### Missing assets
