@@ -6,32 +6,38 @@
 <title>About — Carrie A. Yu</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,900;1,9..144,500&family=Nunito+Sans:wght@400;600;700;800;900&family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
   /* ============ Tokens ============ */
   :root{
-    --paper:#F3F3EE;
-    --card:#FBFBF9;
-    --ink:#17171A;
-    --muted:#6B6B72;
-    --line:#DEDED7;
-    --accent:#1B44FF;
-    --accent-soft:rgba(27,68,255,.10);
+    --cream:#FBF5E9;
+    --cream-2:#F4E9D3;
+    --ink:#14232b;
+    --ink-soft:#42545d;
+    --gold:#E9A23B;
+    --gold-deep:#B5781F;
+    --gold-2:#F6C862;
+    --sun:#FFDC93;
+    --teal:#2FA39A;
+    --teal-2:#4FC3B8;
+    --coral:#E86A50;
+    --coral-2:#F49079;
 
-    --sans:'Space Grotesk', -apple-system, system-ui, sans-serif;
-    --mono:'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+    --display:'Fraunces', Georgia, serif;
+    --body:'Nunito Sans', -apple-system, system-ui, sans-serif;
+    --jp:'Zen Maru Gothic', 'Hiragino Sans', sans-serif;
 
-    --pad: clamp(1.4rem, 5vw, 5.5rem);
-    --maxw: 1080px;
+    --slide-pad: clamp(1.4rem, 4.5vw, 5rem);
+    --maxw: 1180px;
     --ease: cubic-bezier(.22,.61,.36,1);
   }
 
   *{ box-sizing:border-box; margin:0; padding:0; }
   html,body{ height:100%; }
   body{
-    font-family:var(--sans);
-    background:var(--paper);
-    color:var(--ink);
+    font-family:var(--body);
+    background:#0b1620;
+    color:var(--cream);
     overflow:hidden;
     -webkit-font-smoothing:antialiased;
     text-rendering:optimizeLegibility;
@@ -42,264 +48,325 @@
   .slide{
     position:absolute; inset:0;
     display:flex; flex-direction:column; justify-content:center;
-    padding:var(--pad);
-    padding-top: clamp(4rem, 8vh, 6rem);
-    padding-bottom: clamp(4.5rem, 9vh, 6.5rem);
+    padding:var(--slide-pad);
+    padding-bottom: clamp(4.5rem, 9vh, 7rem);
     opacity:0; visibility:hidden;
-    transform:translateY(10px);
-    transition:opacity .55s var(--ease), transform .55s var(--ease), visibility .55s;
+    transform:translateY(14px) scale(.995);
+    transition:opacity .6s var(--ease), transform .6s var(--ease), visibility .6s;
+    overflow:hidden;
   }
   .slide.is-active{ opacity:1; visibility:visible; transform:none; z-index:2; }
-  .inner{ width:100%; max-width:var(--maxw); margin:0 auto; }
+  .slide__inner{ width:100%; max-width:var(--maxw); margin:0 auto; }
+
+  /* Chapter backgrounds — dawn -> sunrise -> daylight */
+  .slide[data-chap="dawn"]{
+    color:var(--cream);
+    background:
+      radial-gradient(120% 80% at 50% 118%, rgba(233,162,59,.30) 0%, rgba(233,162,59,0) 46%),
+      linear-gradient(180deg, #0a1620 0%, #102834 55%, #1b4551 100%);
+  }
+  .slide[data-chap="rise"]{
+    color:var(--cream);
+    background:
+      radial-gradient(90% 60% at 50% 112%, rgba(255,220,147,.55) 0%, rgba(246,200,98,0) 50%),
+      linear-gradient(180deg, #10262f 0%, #2f3b3c 40%, #8a5623 74%, #E9A23B 100%);
+  }
+  .slide[data-chap="day"]{
+    color:var(--ink);
+    background:
+      radial-gradient(110% 75% at 88% -8%, rgba(246,200,98,.42) 0%, rgba(246,200,98,0) 45%),
+      radial-gradient(90% 70% at 6% 108%, rgba(47,163,154,.18) 0%, rgba(47,163,154,0) 48%),
+      linear-gradient(165deg, #FDF8EE 0%, #F6ECD6 60%, #F0E3C9 100%);
+  }
 
   /* ============ Type helpers ============ */
   .eyebrow{
-    font-family:var(--mono); font-weight:500;
-    text-transform:uppercase; letter-spacing:.2em;
-    font-size:clamp(.66rem,1.3vw,.76rem);
-    color:var(--muted);
-    display:inline-flex; align-items:center; gap:.7em;
-    margin-bottom:1.4rem;
+    font-family:var(--body); font-weight:800;
+    text-transform:uppercase; letter-spacing:.28em;
+    font-size:clamp(.62rem,1.15vw,.8rem);
+    color:var(--gold-2);
+    display:inline-flex; align-items:center; gap:.6em;
+    margin-bottom:1.1rem;
   }
-  .eyebrow::before{ content:""; width:22px; height:1px; background:var(--ink); opacity:.4; }
+  .eyebrow::before{ content:""; width:26px; height:2px; background:var(--gold); border-radius:2px; }
+  [data-chap="day"] .eyebrow{ color:var(--gold-deep); }
 
-  h1,h2{ font-family:var(--sans); font-weight:600; line-height:1; letter-spacing:-.02em; }
-  .display{ font-size:clamp(3rem, 11vw, 7.6rem); font-weight:700; letter-spacing:-.035em; }
-  .h-lg{ font-size:clamp(2rem, 6.5vw, 4.4rem); font-weight:600; }
-  .h-md{ font-size:clamp(1.6rem, 4.4vw, 3rem); font-weight:600; }
+  h1,h2,h3{ font-family:var(--display); font-weight:900; line-height:1.02; letter-spacing:-.015em; }
+  .h-xl{ font-size:clamp(2.5rem, 8vw, 6.6rem); }
+  .h-lg{ font-size:clamp(2rem, 5.8vw, 4.4rem); }
+  .h-md{ font-size:clamp(1.55rem, 4vw, 3rem); }
 
-  .lead{ font-size:clamp(1.02rem, 2.1vw, 1.4rem); line-height:1.5; color:var(--muted); max-width:40ch; font-weight:400; }
-  .ink{ color:var(--ink); }
-  .accent{ color:var(--accent); }
+  .jp{ font-family:var(--jp); font-weight:500; opacity:.92; line-height:1.5; }
+  .jp-sub{ font-family:var(--jp); font-weight:500; color:var(--gold-2); opacity:.95;
+    font-size:clamp(.95rem,2vw,1.35rem); margin-top:.5rem; }
+  [data-chap="day"] .jp-sub{ color:var(--teal); opacity:1; }
 
-  /* the one signature: present-tense "now" dot */
-  .now{
-    display:inline-flex; align-items:center; gap:.6rem;
-    font-family:var(--mono); font-weight:500; font-size:.78rem;
-    text-transform:uppercase; letter-spacing:.14em; color:var(--ink);
-  }
-  .now__dot{ position:relative; width:9px; height:9px; border-radius:50%; background:var(--accent); flex:none; }
-  .now__dot::after{
-    content:""; position:absolute; inset:0; border-radius:50%; background:var(--accent);
-    animation:pulse 2.6s var(--ease) infinite;
-  }
-  @keyframes pulse{ 0%{ transform:scale(1); opacity:.55; } 100%{ transform:scale(3.6); opacity:0; } }
+  .lead{ font-size:clamp(1.05rem,2.1vw,1.5rem); line-height:1.55; max-width:44ch; color:inherit; }
+  [data-chap="dawn"] .lead, [data-chap="rise"] .lead{ color:rgba(255,255,255,.86); }
+  [data-chap="day"] .lead{ color:var(--ink-soft); }
+  .muted{ opacity:.72; }
+  .accent{ color:var(--gold-2); } [data-chap="day"] .accent{ color:var(--gold-deep); }
+  .accent-teal{ color:var(--teal-2); } [data-chap="day"] .accent-teal{ color:var(--teal); }
+  .accent-coral{ color:var(--coral-2); } [data-chap="day"] .accent-coral{ color:var(--coral); }
 
-  /* marker under the name */
-  .marker{ display:block; width:clamp(64px,12vw,120px); height:5px; background:var(--accent); border-radius:2px; margin:1.4rem 0; }
-
-  /* ============ Chrome ============ */
+  /* ============ Chrome: chapter tag + counter + progress trail ============ */
   .topbar{
     position:fixed; top:0; left:0; right:0; z-index:20;
     display:flex; justify-content:space-between; align-items:center;
-    padding: clamp(1rem,2.4vh,1.6rem) var(--pad);
-    font-family:var(--mono); font-weight:500;
-    text-transform:uppercase; letter-spacing:.16em; font-size:.68rem;
-    color:var(--muted); pointer-events:none;
+    padding: clamp(1rem,2.4vh,1.7rem) var(--slide-pad);
+    pointer-events:none; mix-blend-mode:normal;
+    font-family:var(--body); font-weight:800;
+    text-transform:uppercase; letter-spacing:.2em; font-size:.7rem;
+    transition:color .5s ease;
   }
-  .topbar .brand{ color:var(--ink); }
-  .topbar .brand b{ color:var(--accent); font-weight:700; }
+  .topbar .chap span{ opacity:.55; }
+  .topbar .brand{ letter-spacing:.16em; }
+  body.theme-dark .topbar{ color:rgba(255,255,255,.7); }
+  body.theme-light .topbar{ color:rgba(20,35,43,.6); }
 
   .nav{
     position:fixed; left:0; right:0; bottom:0; z-index:20;
-    display:flex; align-items:center; gap:1.1rem;
-    padding: 0 var(--pad) clamp(1.1rem,2.6vh,1.6rem);
+    display:flex; align-items:center; gap:1rem;
+    padding: 0 var(--slide-pad) clamp(1.1rem,2.6vh,1.7rem);
   }
+  .trail{ position:relative; flex:1; height:24px; display:flex; align-items:center; }
+  .trail__line{ position:absolute; left:0; right:0; height:2px; border-radius:2px; background:currentColor; opacity:.22; }
+  .trail__fill{ position:absolute; left:0; height:2px; border-radius:2px;
+    background:linear-gradient(90deg,var(--gold),var(--gold-2)); width:0; transition:width .55s var(--ease);
+    box-shadow:0 0 12px rgba(246,200,98,.6); }
+  .trail__dots{ position:relative; display:flex; justify-content:space-between; width:100%; }
+  .dot{ width:9px; height:9px; border-radius:50%; background:currentColor; opacity:.28;
+    cursor:pointer; transition:transform .3s var(--ease), opacity .3s, background .3s; pointer-events:auto; }
+  .dot:hover{ opacity:.6; transform:scale(1.3); }
+  .dot.done{ opacity:.5; background:var(--gold); }
+  .dot.active{ opacity:1; background:var(--gold-2); transform:scale(1.7);
+    box-shadow:0 0 0 4px rgba(246,200,98,.22), 0 0 14px rgba(246,200,98,.7); }
+  body.theme-dark .nav{ color:#fff; }
+  body.theme-light .nav{ color:var(--ink); }
+
   .arrows{ display:flex; gap:.5rem; pointer-events:auto; }
   .arrows button{
-    width:42px; height:42px; border-radius:50%;
-    border:1px solid var(--line); background:transparent; color:var(--ink);
-    font-size:1.05rem; cursor:pointer;
-    display:grid; place-items:center; transition:border-color .2s, background .2s, transform .15s;
-    font-family:var(--sans);
+    width:44px; height:44px; border-radius:50%;
+    border:1.5px solid currentColor; background:transparent; color:inherit;
+    font-size:1.1rem; cursor:pointer; opacity:.5;
+    display:grid; place-items:center; transition:opacity .25s, background .25s, transform .2s;
+    font-family:var(--body);
   }
-  .arrows button:hover{ border-color:var(--ink); }
+  .arrows button:hover{ opacity:1; }
   .arrows button:active{ transform:scale(.92); }
-  .arrows button:disabled{ opacity:.28; cursor:default; }
-  .arrows button:disabled:hover{ border-color:var(--line); }
+  .arrows button:disabled{ opacity:.14; cursor:default; }
+  .counter{ font-variant-numeric:tabular-nums; font-weight:800; font-size:.8rem;
+    letter-spacing:.12em; min-width:56px; text-align:right; opacity:.75; }
 
-  .dots{ display:flex; align-items:center; gap:.5rem; flex:1; }
-  .dot{ width:26px; height:3px; border-radius:2px; background:var(--line); cursor:pointer;
-    transition:background .3s, transform .2s; pointer-events:auto; }
-  .dot:hover{ background:var(--muted); }
-  .dot.active{ background:var(--accent); }
-  .dot.done{ background:var(--muted); }
+  :focus-visible{ outline:3px solid var(--gold-2); outline-offset:3px; border-radius:4px; }
 
-  .counter{ font-family:var(--mono); font-weight:500; font-size:.72rem; letter-spacing:.1em;
-    color:var(--muted); min-width:62px; text-align:right; }
-  .counter b{ color:var(--ink); font-weight:700; }
-
-  :focus-visible{ outline:2px solid var(--accent); outline-offset:3px; border-radius:3px; }
-
-  /* ============ Reveal ============ */
-  .r{ opacity:0; transform:translateY(16px); }
-  .slide.is-active .r{ animation:rise .65s var(--ease) forwards; animation-delay: calc(var(--i,0) * 90ms); }
+  /* ============ Reveal animation ============ */
+  .r{ opacity:0; transform:translateY(20px); }
+  .slide.is-active .r{ animation:rise .7s var(--ease) forwards; }
+  .slide.is-active .r{ animation-delay: calc(var(--i,0) * 110ms); }
   @keyframes rise{ to{ opacity:1; transform:none; } }
 
-  /* ============ Slide 1 — cover ============ */
-  .cover-grid{ display:grid; grid-template-columns:1.15fr .85fr; gap:clamp(1.2rem,3vw,2.2rem); align-items:center; }
-  .cover .now{ margin-bottom:1.6rem; }
-  .cover .display{ margin:0; }
-  .cover .display .last{ color:var(--accent); }
-  .cover .meta{ display:flex; flex-wrap:wrap; gap:.5rem 1.4rem; margin-top:.4rem;
-    font-family:var(--mono); font-size:.82rem; color:var(--muted); letter-spacing:.02em; }
-  .cover .meta span{ display:inline-flex; align-items:center; gap:.45rem; }
-  .cover-photo{ justify-self:end; max-width:320px; width:100%; }
-  .cover-photo img{ width:100%; aspect-ratio:1/1; object-fit:cover; border-radius:50%;
-    border:1px solid var(--line); box-shadow:0 18px 40px rgba(23,23,26,.12); }
-
-  /* ============ Slide 2 — where I am now ============ */
-  .co-head{ display:flex; flex-wrap:wrap; align-items:baseline; gap:.6rem 1.2rem; }
-  .co-role{ font-family:var(--mono); font-size:clamp(.85rem,1.8vw,1.05rem); color:var(--muted); }
-  .tl{ display:flex; align-items:center; gap:clamp(.4rem,1.6vw,1rem); margin:2.2rem 0;
-    font-family:var(--mono); font-size:clamp(.78rem,1.6vw,.95rem); flex-wrap:wrap; }
-  .tl__yr{ color:var(--muted); font-weight:500; }
-  .tl__sep{ flex:1; min-width:14px; height:1px; background:var(--line); }
-  .tl__yr.is-now{ color:var(--accent); font-weight:700; display:inline-flex; align-items:center; gap:.45rem; }
-  .tl__yr.is-now::before{ content:""; width:7px; height:7px; border-radius:50%; background:var(--accent); }
-
-  .doing{ list-style:none; display:grid; gap:.7rem; max-width:52ch; }
-  .doing li{ display:flex; gap:.9rem; align-items:baseline; font-size:clamp(1rem,2vw,1.25rem); font-weight:400; }
-  .doing li::before{ content:"→"; color:var(--accent); font-family:var(--mono); font-weight:700; }
-
-  /* ============ Slide 3 — about me ============ */
-  .lead.summary{ max-width:56ch; color:var(--ink); margin-top:1.6rem; }
-
-  /* ============ Slide 4 — outside work ============ */
-  .hobbies{ display:grid; gap:0; margin:2.1rem 0 0; border-top:1px solid var(--line); max-width:720px; }
-  .hobby{ display:grid; grid-template-columns:120px 1fr; gap:1rem 1.4rem;
-    padding:1.05rem 0; border-bottom:1px solid var(--line); align-items:baseline; }
-  .hobby__k{ font-family:var(--mono); font-size:.72rem; text-transform:uppercase; letter-spacing:.14em; color:var(--accent); }
-  .hobby__v{ font-size:clamp(1rem,2vw,1.28rem); font-weight:500; letter-spacing:-.01em; }
-
-  /* ============ Slide 4 — now & next ============ */
-  .closing .now{ margin-bottom:1.8rem; }
-  .closing .statement{ font-size:clamp(1.9rem,6vw,4.2rem); font-weight:600; line-height:1.05; letter-spacing:-.025em; max-width:16ch; }
-  .closing .statement b{ color:var(--accent); font-weight:600; }
-  .contact{ margin-top:2.4rem; display:flex; flex-wrap:wrap; gap:.6rem 1.8rem;
-    font-family:var(--mono); font-size:.9rem; }
-  .contact a{ color:var(--ink); text-decoration:none; border-bottom:1px solid var(--accent); padding-bottom:2px; }
-  .contact a:hover{ color:var(--accent); }
-  .contact .place{ color:var(--muted); }
+  /* ============ About-me layout stubs (Task 2–4) ============ */
+  .cover-split{ display:grid; grid-template-columns:1.1fr .9fr; gap:clamp(1.2rem,3vw,2.4rem); align-items:center; }
+  .cover-photo img{ width:100%; max-width:320px; aspect-ratio:1; object-fit:cover; border-radius:50%;
+    border:2px solid rgba(255,255,255,.25); box-shadow:0 18px 40px rgba(0,0,0,.28); justify-self:end; }
+  .media-split{ display:grid; grid-template-columns:1fr 1.05fr; gap:clamp(1.2rem,3vw,2.2rem); align-items:center; }
+  .media-grid{ display:grid; gap:.7rem; }
+  .media-grid--3{ grid-template-columns:repeat(3,1fr); }
+  .media-grid--2{ grid-template-columns:1fr 1fr; }
+  .media-grid__item{ margin:0; border-radius:16px; overflow:hidden; aspect-ratio:4/3;
+    box-shadow:0 12px 28px rgba(20,35,43,.12); background:#fff; }
+  .media-grid__item img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .chips{ display:flex; flex-wrap:wrap; gap:.7rem; margin-top:1.4rem; }
+  .chip{ display:inline-flex; align-items:center; padding:.55rem 1rem; border-radius:999px;
+    background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.2); font-weight:700; font-size:.92rem; }
+  [data-chap="day"] .chip{ background:rgba(20,35,43,.05); border-color:rgba(20,35,43,.12); }
+  .two-col{ display:grid; grid-template-columns:1fr 1fr; gap:clamp(1.2rem,3vw,2rem); margin-top:1.6rem; }
+  .cluster__label{ font-family:var(--body); font-weight:900; text-transform:uppercase; letter-spacing:.12em;
+    font-size:.72rem; color:var(--gold-deep); margin-bottom:.55rem; }
+  .cluster__label .jp{ display:inline; text-transform:none; letter-spacing:0; font-weight:500; opacity:.75; margin-left:.45em; }
+  .points{ list-style:none; display:grid; gap:.65rem; margin-top:1.2rem; max-width:48ch; }
+  .points li{ display:flex; gap:.75rem; align-items:baseline; font-size:clamp(1rem,2vw,1.2rem); font-weight:600; }
+  .points li::before{ content:"→"; color:var(--gold-2); font-weight:900; }
+  [data-chap="day"] .points li::before{ color:var(--gold-deep); }
+  .hint{ margin-top:2rem; display:inline-flex; align-items:center; gap:.7rem;
+    font-weight:800; letter-spacing:.14em; text-transform:uppercase; font-size:.72rem; opacity:.72; }
+  .hint .key{ border:1.5px solid rgba(255,255,255,.5); border-radius:8px; padding:.15rem .55rem; }
+  .closing .arigato{ font-family:var(--display); font-weight:900; font-size:clamp(2.4rem,9vw,5.5rem);
+    background:linear-gradient(120deg,var(--coral),var(--gold));
+    -webkit-background-clip:text; background-clip:text; color:transparent; line-height:1; margin-top:1.2rem; }
+  .closing .thanks-en{ font-weight:800; letter-spacing:.08em; text-transform:uppercase; opacity:.7; margin-top:.4rem; }
+  .closing .contact{ margin-top:2rem; display:flex; flex-wrap:wrap; gap:.6rem 1.8rem; font-weight:700; }
+  .closing .contact a{ color:var(--ink); text-decoration:none; border-bottom:2px solid var(--gold); padding-bottom:1px; }
+  .closing .place{ color:var(--ink-soft); }
 
   /* ============ Responsive ============ */
-  @media (max-width: 620px){
-    .hobby{ grid-template-columns:1fr; gap:.35rem; }
-    .cover-grid{ grid-template-columns:1fr; }
-    .cover-photo{ justify-self:start; max-width:260px; }
-    .topbar .section{ display:none; }
-    .dot{ width:18px; }
+  @media (max-width: 820px){
+    .cover-split, .media-split, .two-col{ grid-template-columns:1fr; }
+    .cover-photo img{ max-width:260px; }
+    .media-grid--3{ grid-template-columns:1fr 1fr; }
+    .media-grid--3 .media-grid__item:last-child{ grid-column:1 / -1; }
+  }
+  @media (max-width: 480px){
+    .media-grid--2{ grid-template-columns:1fr; }
+  }
+  @media (max-width: 560px){
+    .topbar .brand{ display:none; }
   }
 
   /* ============ Reduced motion ============ */
   @media (prefers-reduced-motion: reduce){
     *{ animation:none !important; transition:opacity .2s linear, visibility .2s !important; }
     .r{ opacity:1; transform:none; }
-    .now__dot::after{ display:none; }
   }
 
-  /* ============ Print ============ */
+  /* ============ Print (export to PDF backup) ============ */
   @media print{
     body{ overflow:visible; background:#fff; }
     .topbar,.nav{ display:none; }
     .slide{ position:relative; inset:auto; opacity:1 !important; visibility:visible !important;
-      transform:none !important; page-break-after:always; min-height:100vh; }
+      transform:none !important; page-break-after:always; height:100vh; }
     .r{ opacity:1 !important; transform:none !important; }
   }
 </style>
 </head>
-<body>
+<body class="theme-dark">
 
 <div class="topbar">
-  <div class="brand"><b>◆</b> Carrie A. Yu</div>
-  <div class="section" id="sectionTag"></div>
+  <div class="chap" id="chapTag"></div>
+  <div class="brand">Carrie A. Yu</div>
 </div>
 
 <main class="deck" id="deck">
 
-  <!-- 1. WHO I AM -->
-  <section class="slide" data-section="Who I am">
-    <div class="inner cover">
-      <div class="cover-grid">
-        <div>
-          <div class="now r" style="--i:0"><span class="now__dot"></span> Currently · Software Developer &amp; Team Leader</div>
-          <h1 class="display r" style="--i:1">Carrie<br>A. <span class="last">Yu</span></h1>
-          <span class="marker r" style="--i:2"></span>
-          <p class="lead r" style="--i:3">I'm a software developer and team leader at Hipe Japan. I'm from Cebu, Philippines.</p>
-          <div class="meta r" style="--i:4">
-            <span>📍 Cebu City, Philippines</span>
-            <span>💼 Hipe Japan</span>
-          </div>
-        </div>
-        <div class="cover-photo r" style="--i:1.2">
-          <img src="personal.png" alt="Carrie Yu portrait" />
-        </div>
+  <!-- 1. Cover -->
+  <section class="slide" data-chap="dawn" data-theme="dark" data-chapter="">
+    <div class="slide__inner cover-split">
+      <div>
+        <h1 class="h-xl r" style="--i:0">Hi everyone — I’m Carrie.</h1>
+        <p class="jp-sub r" style="--i:1">みなさん、こんにちは。キャリーです。</p>
+        <p class="lead r" style="--i:2; margin-top:1.2rem">Software Engineer &amp; Team Leader · from the Philippines</p>
+        <p class="jp muted r" style="--i:3; font-size:1rem; margin-top:.45rem">ソフトウェアエンジニア / チームリーダー · フィリピン出身</p>
+        <div class="hint r" style="--i:4"><span>Press</span><span class="key">→</span><span>to continue · 「→」で次へ</span></div>
+      </div>
+      <div class="cover-photo r" style="--i:1.2">
+        <img src="personal.png" alt="Carrie Yu portrait" />
       </div>
     </div>
   </section>
 
-  <!-- 2. WHERE I AM NOW -->
-  <section class="slide" data-section="Where I am now">
-    <div class="inner">
-      <div class="eyebrow r" style="--i:0">Where I am now</div>
-      <div class="co-head r" style="--i:1">
-        <h2 class="h-lg">Hipe Japan</h2>
-        <span class="co-role">Software Developer &amp; Team Leader</span>
-      </div>
-      <div class="tl r" style="--i:2" aria-label="Timeline: at Hipe Japan since 2022, now in the 4th year">
-        <span class="tl__yr">2022</span><span class="tl__sep"></span>
-        <span class="tl__yr">2023</span><span class="tl__sep"></span>
-        <span class="tl__yr">2024</span><span class="tl__sep"></span>
-        <span class="tl__yr">2025</span><span class="tl__sep"></span>
-        <span class="tl__yr is-now">2026 · 4th year</span>
-      </div>
-      <!-- Persol engagement started around Dec 2025; update the month count as time passes -->
-      <div class="now r" style="--i:3; margin-bottom:1.7rem"><span class="now__dot"></span> Now working with Persol · 7 months</div>
-      <ul class="doing r" style="--i:4">
-        <li>Plan features and requirements</li>
-        <li>Coordinate and support the team</li>
-        <li>Work with clients directly</li>
+  <!-- 2. Who I am -->
+  <section class="slide" data-chap="dawn" data-theme="dark" data-chapter="Who I am · 自己紹介">
+    <div class="slide__inner">
+      <div class="eyebrow r" style="--i:0">Who I am</div>
+      <h2 class="h-lg r" style="--i:1">Software Engineer &amp; Team Leader</h2>
+      <p class="jp-sub r" style="--i:2">ソフトウェアエンジニア / チームリーダー</p>
+      <p class="lead r" style="--i:3; margin-top:1.4rem">I’m originally from the Philippines. I work as a software engineer and team leader — building software and supporting the people I work with.</p>
+      <p class="jp r muted" style="--i:4; font-size:1rem; margin-top:.7rem; max-width:48ch">フィリピン出身です。ソフトウェアエンジニアおよびチームリーダーとして、プロダクトづくりとチームのサポートに取り組んでいます。</p>
+    </div>
+  </section>
+
+  <!-- 3. Career -->
+  <section class="slide" data-chap="rise" data-theme="dark" data-chapter="Career · キャリア">
+    <div class="slide__inner">
+      <div class="eyebrow r" style="--i:0">Career</div>
+      <h2 class="h-lg r" style="--i:1">6+ years building software</h2>
+      <p class="jp-sub r" style="--i:2">ソフトウェア開発歴 6年以上</p>
+      <ul class="points r" style="--i:3">
+        <li>Graduated with a degree in Computer Science</li>
+        <li>Build web applications and lead development teams</li>
+        <li>Enjoy solving technical challenges and helping the team deliver high-quality software</li>
       </ul>
+      <p class="jp r muted" style="--i:4; font-size:1rem; margin-top:1rem; max-width:48ch">コンピュータサイエンスを専攻し、Webアプリ開発やチームリードに携わってきました。</p>
+      <div class="chips r" style="--i:5">
+        <span class="chip">Java</span>
+        <span class="chip">React</span>
+        <span class="chip">Python</span>
+        <span class="chip">AWS</span>
+      </div>
     </div>
   </section>
 
-  <!-- 3. ABOUT ME -->
-  <section class="slide" data-section="About me">
-    <div class="inner">
-      <div class="eyebrow r" style="--i:0">About me</div>
-      <h2 class="h-md r" style="--i:1">I enjoy building software and helping my team.</h2>
-      <p class="lead summary r" style="--i:2">I like to learn new things and keep improving every day. I care about doing good work and supporting the people I work with.</p>
+  <!-- 4. Sports -->
+  <section class="slide" data-chap="day" data-theme="light" data-chapter="Outside work · プライベート">
+    <div class="slide__inner media-split">
+      <div>
+        <div class="eyebrow r" style="--i:0">Outside work</div>
+        <h2 class="h-md r" style="--i:1">Staying active</h2>
+        <p class="jp-sub r" style="--i:2">体を動かすことが好きです</p>
+        <p class="lead r" style="--i:3; margin-top:1.2rem">I like playing badminton, tennis, and table tennis — they help me stay active and have fun.</p>
+      </div>
+      <div class="media-grid media-grid--3 r" style="--i:2">
+        <figure class="media-grid__item"><img src="badminton.avif" alt="Badminton" /></figure>
+        <figure class="media-grid__item"><img src="tennis.jpg" alt="Tennis" /></figure>
+        <figure class="media-grid__item"><img src="table-tennis.webp" alt="Table tennis" /></figure>
+      </div>
     </div>
   </section>
 
-  <!-- 4. OUTSIDE WORK -->
-  <section class="slide" data-section="Outside work">
-    <div class="inner">
+  <!-- 5. Games -->
+  <section class="slide" data-chap="day" data-theme="light" data-chapter="Outside work · プライベート">
+    <div class="slide__inner media-split">
+      <div>
+        <div class="eyebrow r" style="--i:0">Outside work</div>
+        <h2 class="h-md r" style="--i:1">Games I love</h2>
+        <p class="jp-sub r" style="--i:2">好きなゲーム</p>
+        <p class="lead r" style="--i:3; margin-top:1.2rem">I enjoy Minecraft, Dota 2, Valorant, and many other games. Gaming is one of my favorite ways to relax after work and spend time with friends.</p>
+      </div>
+      <div class="media-grid media-grid--3 r" style="--i:2">
+        <figure class="media-grid__item"><img src="minecraft.jpg" alt="Minecraft" /></figure>
+        <figure class="media-grid__item"><img src="dota-2.jpg" alt="Dota 2" /></figure>
+        <figure class="media-grid__item"><img src="valorant.jpeg" alt="Valorant" /></figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Anime / manga -->
+  <section class="slide" data-chap="day" data-theme="light" data-chapter="Outside work · プライベート">
+    <div class="slide__inner media-split">
+      <div>
+        <div class="eyebrow r" style="--i:0">Outside work</div>
+        <h2 class="h-md r" style="--i:1">Manga &amp; anime</h2>
+        <p class="jp-sub r" style="--i:2">漫画・アニメ</p>
+        <p class="lead r" style="--i:3; margin-top:1.2rem">I enjoy reading manga and watching anime across different genres. Favorites include Tokyo Ghoul, Attack on Titan, and more.</p>
+      </div>
+      <div class="media-grid media-grid--2 r" style="--i:2">
+        <figure class="media-grid__item"><img src="tokyo-ghould.jpg" alt="Tokyo Ghoul" /></figure>
+        <figure class="media-grid__item"><img src="attack-on-titan.jpg" alt="Attack on Titan" /></figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. Learning & family -->
+  <section class="slide" data-chap="day" data-theme="light" data-chapter="Outside work · プライベート">
+    <div class="slide__inner">
       <div class="eyebrow r" style="--i:0">Outside work</div>
-      <h2 class="h-md r" style="--i:1">A few things I enjoy.</h2>
-      <div class="hobbies r" style="--i:2">
-        <div class="hobby">
-          <div class="hobby__k">Reading</div>
-          <div class="hobby__v">Manga</div>
+      <h2 class="h-md r" style="--i:1">Always learning · time with family</h2>
+      <p class="jp-sub r" style="--i:2">学び続けること、そして家族との時間</p>
+      <div class="two-col r" style="--i:3">
+        <div class="cluster">
+          <div class="cluster__label">Exploring tech <span class="jp">新しい技術</span></div>
+          <p class="lead">I like exploring new technology — especially AI and new software development tools — and trying things that help me grow as a developer.</p>
         </div>
-        <div class="hobby">
-          <div class="hobby__k">Games</div>
-          <div class="hobby__v">Minecraft, Dota, Valorant, and more — on mobile and PC</div>
-        </div>
-        <div class="hobby">
-          <div class="hobby__k">Sports</div>
-          <div class="hobby__v">Tennis, table tennis, and badminton</div>
+        <div class="cluster">
+          <div class="cluster__label">Family <span class="jp">家族</span></div>
+          <p class="lead">I also enjoy spending quality time with my family — going out together, watching movies, or simply relaxing at home.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- 5. THANKS -->
-  <section class="slide" data-section="Thank you">
-    <div class="inner closing">
-      <div class="now r" style="--i:0"><span class="now__dot"></span> Thank you</div>
-      <p class="statement r" style="--i:1">Thanks for your time. <b>Feel free to reach out.</b></p>
-      <div class="contact r" style="--i:2">
+  <!-- 8. Closing -->
+  <section class="slide" data-chap="day" data-theme="light" data-chapter="">
+    <div class="slide__inner closing">
+      <div class="eyebrow r" style="--i:0">Thank you</div>
+      <h2 class="h-lg r" style="--i:1">Excited to meet everyone</h2>
+      <p class="jp-sub r" style="--i:2">みなさんとお会いできてうれしいです</p>
+      <p class="lead r" style="--i:3; margin-top:1.2rem; max-width:42ch">I’m excited to learn from your experiences and hopefully contribute my own knowledge as well.</p>
+      <p class="jp r muted" style="--i:4; font-size:1rem; margin-top:.6rem; max-width:42ch">みなさんの経験から学び、私も知識を共有できたらうれしいです。</p>
+      <div class="arigato r" style="--i:5">ありがとう</div>
+      <div class="thanks-en r" style="--i:6">Thank you</div>
+      <div class="contact r" style="--i:7">
         <a href="mailto:eirracyu12@gmail.com">eirracyu12@gmail.com</a>
         <span class="place">Cebu City, Philippines</span>
       </div>
@@ -310,9 +377,13 @@
 
 <div class="nav">
   <div class="arrows"><button id="prev" aria-label="Previous slide">‹</button></div>
-  <div class="dots" id="dots"></div>
+  <div class="trail" aria-hidden="true">
+    <div class="trail__line"></div>
+    <div class="trail__fill" id="trailFill"></div>
+    <div class="trail__dots" id="dots"></div>
+  </div>
   <div class="arrows"><button id="next" aria-label="Next slide">›</button></div>
-  <div class="counter" id="counter"><b>01</b> / 05</div>
+  <div class="counter" id="counter">01 / 08</div>
 </div>
 
 <script>
@@ -320,20 +391,20 @@
   const slides = Array.from(document.querySelectorAll('.slide'));
   const total = slides.length;
   const dotsWrap = document.getElementById('dots');
+  const trailFill = document.getElementById('trailFill');
   const counter = document.getElementById('counter');
-  const sectionTag = document.getElementById('sectionTag');
+  const chapTag = document.getElementById('chapTag');
   const prevBtn = document.getElementById('prev');
   const nextBtn = document.getElementById('next');
+  const body = document.body;
   let current = 0;
 
   slides.forEach((s,i)=>{
     const d = document.createElement('span');
     d.className = 'dot';
     d.setAttribute('role','button');
-    d.setAttribute('tabindex','0');
     d.setAttribute('aria-label','Go to slide '+(i+1));
     d.addEventListener('click', ()=>go(i));
-    d.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); go(i); } });
     dotsWrap.appendChild(d);
   });
   const dots = Array.from(dotsWrap.children);
@@ -349,15 +420,19 @@
       d.classList.toggle('active', i===current);
       d.classList.toggle('done', i<current);
     });
-    counter.innerHTML = '<b>'+pad(current+1)+'</b> / '+pad(total);
-    sectionTag.textContent = slides[current].getAttribute('data-section') || '';
+    trailFill.style.width = (current/(total-1))*100 + '%';
+    counter.textContent = pad(current+1)+' / '+pad(total);
+    chapTag.textContent = slides[current].getAttribute('data-chapter') || '';
+    const theme = slides[current].getAttribute('data-theme') || 'dark';
+    body.className = 'theme-'+theme;
     prevBtn.disabled = current===0;
     nextBtn.disabled = current===total-1;
     if(history.replaceState){ history.replaceState(null,'','#'+(current+1)); }
   }
 
-  const next = ()=>go(current+1);
-  const prev = ()=>go(current-1);
+  function next(){ go(current+1); }
+  function prev(){ go(current-1); }
+
   nextBtn.addEventListener('click', next);
   prevBtn.addEventListener('click', prev);
 
@@ -378,6 +453,13 @@
     const dx=e.changedTouches[0].clientX-tx, dy=e.changedTouches[0].clientY-ty;
     if(Math.abs(dx)>50 && Math.abs(dx)>Math.abs(dy)){ dx<0 ? next() : prev(); }
   }, {passive:true});
+
+  document.querySelectorAll('.media-grid__item img, .cover-photo img').forEach(img=>{
+    img.addEventListener('error', ()=>{
+      const cell = img.closest('.media-grid__item') || img.closest('.cover-photo');
+      if(cell) cell.remove();
+    });
+  });
 
   const startAt = parseInt((location.hash||'').replace('#',''),10);
   go(Number.isInteger(startAt) && startAt>=1 && startAt<=total ? startAt-1 : 0);

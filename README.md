@@ -5,7 +5,7 @@ An interactive slide deck telling Carrie A. Yu's career story — **"From Zero t
 ## Contents
 
 - **[index.html](index.html)** — The 17-slide presentation. A "sunrise" theme (dawn → sunrise → daylight) that opens with a hello greeting and a short self-introduction, then follows the journey from the Philippines through the climb into leadership and AI work.
-- **[about-me.html](about-me.html)** — A brief, plain self-introduction — a 5-slide deck (who I am, where I am now, about me, outside work, thank you & contact). A separate, minimal cobalt-on-paper identity distinct from the sunrise deck.
+- **[about-me.html](about-me.html)** — An 8-slide bilingual (EN + JP) self-introduction in the same sunrise visual language as the main deck — who I am, career, sports, games, anime, learning & family, thank you & contact.
 - **[qa-cheatsheet.html](qa-cheatsheet.html)** — A quick reference / Q&A cheat sheet to support the talk.
 
 ## Running it
