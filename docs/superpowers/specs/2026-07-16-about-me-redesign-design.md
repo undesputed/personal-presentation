@@ -33,81 +33,94 @@
 | Audience | Mixed room — warm but polished |
 | Visual identity | Match sunrise deck (`index.html`) |
 | Length | Medium → finalized as **8 slides** |
-| Language | Full bilingual EN + JP pattern like `index.html` |
+| Language | Bilingual like `index.html`: EN headlines + JP `jp-sub` on every slide; EN body; JP body line only where noted |
 | Structure | Story arc (Approach 1), with Games and Anime/manga as **separate** slides |
 
 ## Slide map
 
-| # | `data-chap` | Theme | Slide | Media |
-|---|-------------|-------|-------|-------|
-| 1 | dawn | dark | Cover / hello | `personal.png` (circular portrait) |
-| 2 | dawn | dark | Who I am | — |
-| 3 | rise | dark | Career | tech chips only |
-| 4 | day | light | Sports | `badminton.avif`, `tennis.jpg`, `table-tennis.webp` |
-| 5 | day | light | Games | `minecraft.jpg`, `dota-2.jpg`, `valorant.jpeg` |
-| 6 | day | light | Anime / manga | `tokyo-ghould.jpg`, `attack-on-titan.jpg` |
-| 7 | day | light | Learning & family | no required image (optional family later) |
-| 8 | day | light | Thank you / contact | — |
+| # | `data-chap` | Theme | `data-chapter` (topbar) | Slide | Media |
+|---|-------------|---------|-------------------------|-------|-------|
+| 1 | dawn | dark | *(empty)* | Cover / hello | `personal.png` (circular portrait) |
+| 2 | dawn | dark | Who I am · 自己紹介 | Who I am | — |
+| 3 | rise | dark | Career · キャリア | Career | tech chips only |
+| 4 | day | light | Outside work · プライベート | Sports | `badminton.avif`, `tennis.jpg`, `table-tennis.webp` |
+| 5 | day | light | Outside work · プライベート | Games | `minecraft.jpg`, `dota-2.jpg`, `valorant.jpeg` |
+| 6 | day | light | Outside work · プライベート | Anime / manga | `tokyo-ghould.jpg`, `attack-on-titan.jpg` |
+| 7 | day | light | Outside work · プライベート | Learning & family | no required image |
+| 8 | day | light | *(empty)* | Thank you / contact | — |
 
 Chapter progression mirrors the main deck: dawn → rise → day.
+
+### Page chrome (locked)
+- `<title>`: `About — Carrie A. Yu`
+- Topbar brand: `Carrie A. Yu` (same spirit as current about-me; no need to force “Hipe Japan” into the brand line)
+- Image captions on slides 4–6: **none** (alt text only for accessibility)
 
 ## Content contract (per slide)
 
 Copy is tightened from Carrie’s draft for slide density. Implementers may lightly polish wording for rhythm but must not change facts.
 
 ### 1 — Cover
-- EN: Hi everyone — I’m Carrie.
-- JP: みなさん、こんにちは。キャリーです。
-- Role line: Software Engineer & Team Leader · from the Philippines
+- Headline EN: Hi everyone — I’m Carrie.
+- JP sub: みなさん、こんにちは。キャリーです。
+- Role line EN: Software Engineer & Team Leader · from the Philippines
 - JP support: ソフトウェアエンジニア / チームリーダー · フィリピン出身
-- Portrait: `personal.png`
-- Navigation hint (same spirit as `index.html`)
+- Portrait: `personal.png` — alt: `Carrie Yu portrait`
+- Navigation hint (locked): `Press` + `→` + `to continue · 「→」で次へ`
 
 ### 2 — Who I am
-- Headline: Software Engineer & Team Leader
-- JP: ソフトウェアエンジニア / チームリーダー
-- Body: Originally from the Philippines; builds software and leads teams; excited to meet everyone.
+- Headline EN: Software Engineer & Team Leader
+- JP sub: ソフトウェアエンジニア / チームリーダー
+- Body EN: I’m originally from the Philippines. I work as a software engineer and team leader — building software and supporting the people I work with.
+- JP body: フィリピン出身です。ソフトウェアエンジニアおよびチームリーダーとして、プロダクトづくりとチームのサポートに取り組んでいます。
 - Keep short — credentials belong on slide 3.
 
 ### 3 — Career
-- Headline: 6+ years building software
-- JP: ソフトウェア開発歴 6年以上
-- Points: Computer Science degree · web applications · lead development teams
-- Closing: Enjoys solving technical challenges and helping the team deliver high-quality software.
+- Headline EN: 6+ years building software
+- JP sub: ソフトウェア開発歴 6年以上
+- Points EN:
+  - Graduated with a degree in Computer Science
+  - Build web applications and lead development teams
+  - Enjoy solving technical challenges and helping the team deliver high-quality software
+- JP body (one line under points): コンピュータサイエンスを専攻し、Webアプリ開発やチームリードに携わってきました。
 - Chips: Java · React · Python · AWS
 
 ### 4 — Sports
-- Headline: Staying active
-- JP: 体を動かすことが好きです
-- Body: Badminton, tennis, and table tennis — stay active and have fun.
-- Layout: text + 3-image grid (one image per sport)
+- Headline EN: Staying active
+- JP sub: 体を動かすことが好きです
+- Body EN: I like playing badminton, tennis, and table tennis — they help me stay active and have fun.
+- Layout: text column + 3-image grid (equal cells). Alts: `Badminton`, `Tennis`, `Table tennis`. No captions.
 
 ### 5 — Games
-- Headline: Games I love
-- JP: 好きなゲーム
-- Body: Minecraft, Dota, Valorant, and more — relax after work and spend time with friends.
-- Layout: text + 3-image grid
+- Headline EN: Games I love
+- JP sub: 好きなゲーム
+- Body EN: I enjoy Minecraft, Dota, Valorant, and many other games. Gaming is one of my favorite ways to relax after work and spend time with friends.
+- Layout: text column + 3-image grid. Alts: `Minecraft`, `Dota 2`, `Valorant`. No captions.
 
 ### 6 — Anime / manga
-- Headline: Manga & anime
-- JP: 漫画・アニメ
-- Body: Enjoy reading manga and watching anime across genres; favorites include Tokyo Ghoul, Attack on Titan, and more.
-- Layout: text + 2-image grid
+- Headline EN: Manga & anime
+- JP sub: 漫画・アニメ
+- Body EN: I enjoy reading manga and watching anime across different genres. Favorites include Tokyo Ghoul, Attack on Titan, and more.
+- Layout: text column + 2-image grid. Alts: `Tokyo Ghoul`, `Attack on Titan`. No captions.
+- Asset path: use `tokyo-ghould.jpg` as currently named (optional rename can be a follow-up).
 
 ### 7 — Learning & family
-- Headline: Always learning · time with family
-- JP: 学び続けること、そして家族との時間
-- Two clusters:
-  - Exploring AI and new software development tools
-  - Quality time with family — going out, movies, relaxing at home
-- No required photo; do not leave empty image frames
+- Headline EN: Always learning · time with family
+- JP sub: 学び続けること、そして家族との時間
+- Layout: **two-column split on desktop** (stack on mobile). No images.
+  - Left cluster label EN: Exploring tech · JP: 新しい技術
+    - Body EN: I like exploring new technology — especially AI and new software development tools — and trying things that help me grow as a developer.
+  - Right cluster label EN: Family · JP: 家族
+    - Body EN: I also enjoy spending quality time with my family — going out together, watching movies, or simply relaxing at home.
+- Do not leave empty image frames.
 
 ### 8 — Closing
-- Headline: Excited to meet everyone
-- JP: みなさんとお会いできてうれしいです
-- Body: Looking forward to learning from others and contributing knowledge.
-- Contact: `eirracyu12@gmail.com` · Cebu City, Philippines
-- Closing thank-you treatment in the spirit of `index.html` (ありがとう / Thank you)
+- Headline EN: Excited to meet everyone
+- JP sub: みなさんとお会いできてうれしいです
+- Body EN: I’m excited to learn from your experiences and hopefully contribute my own knowledge as well.
+- JP body: みなさんの経験から学び、私も知識を共有できたらうれしいです。
+- Large thank-you line: `ありがとう` with smaller EN `Thank you`
+- Contact: mailto link `eirracyu12@gmail.com` · place text `Cebu City, Philippines`
 
 ## Visual & interaction design
 
